@@ -291,7 +291,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           TOP BAR NAVIGATION (Matches exact reference header)
          ------------------------------------------------------------- */}
       <header className="sticky top-0 z-50 w-full bg-[#F6F4EE] backdrop-blur-md border-b border-[#EAE4DC] transition-all">
-        <div className="w-full max-w-[1580px] mx-auto px-6 sm:px-10 py-3.5 flex items-center justify-between gap-4">
+        <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo (Izquierda) */}
           <div className="flex items-center">
             <button
@@ -415,7 +415,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
         {/* Input desplegable de búsqueda rápida */}
         {isNavSearchOpen && (
           <div className="w-full bg-[#F6F4EE] border-t border-[#EAE4DC] px-6 py-2.5 transition-all">
-            <div className="max-w-[1580px] mx-auto relative">
+            <div className="max-w-[1400px] mx-auto relative">
               <Search className="w-4 h-4 text-[#8C7667] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
