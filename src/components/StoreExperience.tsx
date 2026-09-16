@@ -291,28 +291,22 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           TOP BAR NAVIGATION (Matches exact reference header)
          ------------------------------------------------------------- */}
       <header className="sticky top-0 z-50 w-full bg-white/95 sm:bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#EAE4DC] transition-all">
-        <div className="w-full max-w-[1600px] mx-auto px-8 h-16 flex items-center justify-between">
-          {/* Logo (Izquierda) */}
-          <div className="flex items-center">
-            <button
-              onClick={onBackToHome}
-              className="flex items-center gap-2 group cursor-pointer select-none bg-transparent border-none p-0 focus:outline-none transition-transform active:scale-98 shrink-0"
-              title="Cookie Planet"
-            >
-              <div className="w-7 h-7 rounded-full border border-[#2C1810] flex items-center justify-center text-[#2C1810]">
-                <Cookie className="w-4 h-4 text-[#2C1810]" />
-              </div>
-              <span className="text-lg sm:text-xl font-bold tracking-tight text-[#2C1810] font-sans">
-                Cookie Planet
-              </span>
-            </button>
-          </div>
+        <div className="flex justify-between items-center h-16 w-full max-w-[1600px] mx-auto px-8">
+          {/* Extremo Izquierdo (Logo) */}
+          <button
+            onClick={onBackToHome}
+            className="flex items-center gap-2 font-bold text-lg text-[#2C1810] cursor-pointer bg-transparent border-none p-0 focus:outline-none shrink-0"
+            title="Cookie Planet"
+          >
+            <Cookie className="w-5 h-5 text-[#2C1810]" />
+            <span>Cookie Planet</span>
+          </button>
 
-          {/* Menú Central: Inicio, About, Top Cookies, Merch, Store */}
-          <nav className="hidden md:flex items-center justify-center gap-7 lg:gap-10 text-xs sm:text-[13px] font-medium text-[#4A3225] shrink-0">
+          {/* Centro (Navegación) */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#4A3225]">
             <button
               onClick={onBackToHome}
-              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
+              className="text-[#4A3225] hover:text-black transition-colors cursor-pointer"
             >
               Inicio
             </button>
@@ -322,7 +316,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#about';
               }}
-              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
+              className="text-[#4A3225] hover:text-black transition-colors cursor-pointer"
             >
               About
             </a>
@@ -332,7 +326,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#projects';
               }}
-              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
+              className="text-[#4A3225] hover:text-black transition-colors cursor-pointer"
             >
               Top Cookies
             </a>
@@ -342,69 +336,66 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#hola';
               }}
-              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
+              className="text-[#4A3225] hover:text-black transition-colors cursor-pointer"
             >
               Merch
             </a>
-            {/* Store (Activo con subrayado sobrio) */}
-            <div className="relative inline-flex flex-col items-center py-1">
-              <span className="text-[#2C1810] font-semibold cursor-default">
-                Store
-              </span>
-              <span className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-[#2C1810]" />
-            </div>
+            {/* Store (Activo con border-b-2 border-black pb-1) */}
+            <span className="text-black font-medium border-b-2 border-black pb-1 cursor-default">
+              Store
+            </span>
           </nav>
 
-          {/* Herramientas (Derecha): Lupa, Usuario, Favoritos (con badge 2), Carrito */}
-          <div className="flex items-center gap-3.5 sm:gap-4 shrink-0 text-[#2C1810]">
-            {/* Lupa */}
+          {/* Extremo Derecho (Acciones) */}
+          <div className="flex items-center gap-5 text-[#2C1810]">
+            {/* 1. Búsqueda */}
             <button
               onClick={() => {
                 setIsNavSearchOpen(!isNavSearchOpen);
                 handleScrollToGrid();
               }}
-              className="p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
-              title="Buscar"
-              aria-label="Buscar"
+              className="text-[#2C1810] hover:text-black transition-colors cursor-pointer p-0.5"
+              title="Búsqueda"
+              aria-label="Búsqueda"
             >
-              <Search className="w-4.5 h-4.5" />
+              <Search className="w-5 h-5" />
             </button>
 
-            {/* Usuario */}
+            {/* 2. Usuario */}
             <button
               onClick={() => showToast('Perfil de usuario')}
-              className="p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
-              title="Mi Cuenta"
-              aria-label="Mi Cuenta"
+              className="text-[#2C1810] hover:text-black transition-colors cursor-pointer p-0.5"
+              title="Usuario"
+              aria-label="Usuario"
             >
-              <User className="w-4.5 h-4.5" />
+              <User className="w-5 h-5" />
             </button>
 
-            {/* Corazón Favoritos con badge 2 */}
+            {/* 3. Favoritos (con el badge naranja de notificación) */}
             <button
               onClick={() => {
                 showToast(`Tienes ${favorites.size > 0 ? favorites.size : 2} favoritos guardados`);
               }}
-              className="relative p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
+              className="relative text-[#2C1810] hover:text-black transition-colors cursor-pointer p-0.5"
               title="Favoritos"
               aria-label="Favoritos"
             >
-              <Heart className="w-4.5 h-4.5" />
-              <span className="absolute -top-1.5 -right-2 bg-[#DDA15E] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <Heart className="w-5 h-5" />
+              <span className="absolute -top-1.5 -right-2 bg-orange-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {favorites.size > 0 ? favorites.size : 2}
               </span>
             </button>
 
-            {/* Bolsa / Carrito */}
+            {/* 4. Carrito de compras */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
+              className="relative text-[#2C1810] hover:text-black transition-colors cursor-pointer p-0.5"
               title="Carrito de compras"
               aria-label="Carrito de compras"
             >
-              <ShoppingCart className="w-4.5 h-4.5" />
+              <ShoppingCart className="w-5 h-5" />
               {totalCartCount > 0 && (
-                <span className="absolute -top-1.5 -right-2 bg-[#2C1810] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-2 bg-[#2C1810] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {totalCartCount}
                 </span>
               )}
@@ -646,40 +637,31 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           <main className="flex-1 min-w-0 space-y-6">
             
             {/* 1. TOP HERO BANNER */}
-            <div className="w-full rounded-2xl overflow-hidden bg-[#F3EFEA] flex justify-between items-center h-[200px]">
+            <div className="w-full rounded-2xl overflow-hidden bg-[#F3EFEA] flex justify-between items-center h-[200px] px-6 sm:px-8 py-5 border border-[#EAE4DC]/60">
               {/* Left text content */}
-              <div className="p-6 sm:p-7 md:p-8 z-10 max-w-xl">
+              <div className="z-10 max-w-xl">
                 <span className="text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-1">
                   GALLETAS &amp; POSTRES
                 </span>
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#2C1810] leading-tight font-serif tracking-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#2C1810] leading-tight tracking-tight">
                   Dulces momentos,
                   <br />
                   en cada bocado
                 </h1>
-                <p className="mt-1 text-xs text-[#7A6456] max-w-md hidden sm:block line-clamp-1">
+                <p className="mt-1.5 text-xs sm:text-sm font-medium text-[#7A6456] max-w-md hidden sm:block line-clamp-1">
                   Descubre nuestras galletas artesanales y postres hechos con ingredientes de la mejor calidad.
                 </p>
                 <button
                   onClick={handleScrollToGrid}
-                  className="mt-3 inline-flex items-center gap-2 bg-[#2C1810] hover:bg-[#1C0F0A] text-white text-xs font-semibold px-4 py-2 rounded-full transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
+                  className="mt-3 inline-flex items-center gap-2 bg-[#2C1810] hover:bg-[#1C0F0A] text-white text-xs font-medium px-4 py-2 rounded-full transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
                 >
                   <span>Ver colección</span>
                   <span>→</span>
                 </button>
               </div>
 
-              {/* Right image display (cookies stack & chocolate) */}
-              <div className="w-full md:w-1/2 h-full flex items-center justify-end">
-                <img
-                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=80"
-                  alt="Dulces momentos en cada bocado"
-                  className="h-full object-cover max-h-[200px]"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1000&q=80";
-                  }}
-                />
+              {/* Right placeholder rectangle replacing image */}
+              <div className="hidden sm:flex w-52 md:w-64 lg:w-72 h-[155px] bg-[#EAE6DF] rounded-2xl shrink-0 items-center justify-center border border-[#E0DBD2]/70">
               </div>
             </div>
 
@@ -746,26 +728,15 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                   return (
                     <article
                       key={product.id}
-                      className="bg-white rounded-xl border border-[#EAE4DC]/80 overflow-hidden shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
+                      className="bg-white rounded-2xl border border-[#EAE4DC]/80 p-2.5 overflow-hidden shadow-2xs hover:shadow-sm transition-all duration-200 flex flex-col justify-between group"
                     >
-                      {/* Top Image container */}
-                      <div className="relative w-full overflow-hidden bg-white">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-40 object-cover rounded-t-xl"
-                          loading="lazy"
-                          referrerPolicy="no-referrer"
-                          onError={(e) => {
-                            e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
-                          }}
-                        />
-
+                      {/* Top Image placeholder (Replaces automatic image search/generation) */}
+                      <div className="relative w-full h-40 bg-[#EAE6DF] rounded-2xl overflow-hidden flex items-center justify-center">
                         {/* Favorite Heart Outline (Top Right) */}
                         <button
                           type="button"
                           onClick={(e) => toggleFavorite(product.id, e)}
-                          className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-gray-400 hover:text-rose-600 hover:scale-110 transition-all shadow-2xs cursor-pointer"
+                          className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-gray-400 hover:text-rose-600 hover:scale-110 transition-all shadow-2xs cursor-pointer z-10"
                           title={isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'}
                           aria-label={`Favorito ${product.name}`}
                         >
@@ -778,15 +749,15 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                       </div>
 
                       {/* Card Content */}
-                      <div className="p-3 flex flex-col flex-1 justify-between gap-2">
+                      <div className="pt-2.5 pb-1 px-1 flex flex-col flex-1 justify-between gap-2">
                         <div>
-                          {/* Title */}
-                          <h3 className="text-xs font-semibold text-[#2C1810] truncate">
+                          {/* Title / Subtitle */}
+                          <h3 className="text-xs sm:text-[13px] font-medium text-[#2C1810] truncate">
                             {product.name}
                           </h3>
 
                           {/* Price */}
-                          <div className="mt-0.5 text-xs font-bold text-[#2C1810]">
+                          <div className="mt-0.5 text-xs sm:text-[13px] font-medium text-[#2C1810]">
                             ${product.price.toFixed(2)}
                           </div>
 
@@ -804,7 +775,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                                 />
                               ))}
                             </div>
-                            <span className="text-[10px] text-[#7A6456]">
+                            <span className="text-[10px] text-[#7A6456] font-medium">
                               {product.rating.toFixed(1)} {product.ratingCount ? `(${product.ratingCount})` : ''}
                             </span>
                           </div>
@@ -853,19 +824,10 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               }}
               className="bg-[#FCEAD2] hover:bg-[#F9E2C5] rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md group border border-[#F5DCBD]"
             >
-              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
-                <img
-                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80"
-                  alt="Colección Clásicas"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80";
-                  }}
-                />
+              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-2xl bg-[#EAE6DF] border border-black/5 flex items-center justify-center">
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm sm:text-base text-[#382015]">Clásicas</span>
+                <span className="font-medium text-sm sm:text-base text-[#382015]">Clásicas</span>
                 <span className="w-6 h-6 rounded-full border border-[#382015] flex items-center justify-center text-xs group-hover:bg-[#382015] group-hover:text-white transition-colors">
                   →
                 </span>
@@ -880,19 +842,10 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               }}
               className="bg-[#FCE1E7] hover:bg-[#FAD5DD] rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md group border border-[#F7CFD8]"
             >
-              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
-                <img
-                  src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80"
-                  alt="Colección Rellenas"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
-                  }}
-                />
+              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-2xl bg-[#EAE6DF] border border-black/5 flex items-center justify-center">
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm sm:text-base text-[#382015]">Rellenas</span>
+                <span className="font-medium text-sm sm:text-base text-[#382015]">Rellenas</span>
                 <span className="w-6 h-6 rounded-full border border-[#382015] flex items-center justify-center text-xs group-hover:bg-[#382015] group-hover:text-white transition-colors">
                   →
                 </span>
@@ -907,19 +860,10 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               }}
               className="bg-[#E8DFF8] hover:bg-[#DECFF5] rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md group border border-[#D8C7F2]"
             >
-              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
-                <img
-                  src="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=600&q=80"
-                  alt="Colección Sin Azúcar"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
-                  }}
-                />
+              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-2xl bg-[#EAE6DF] border border-black/5 flex items-center justify-center">
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm sm:text-base text-[#382015]">Sin azúcar</span>
+                <span className="font-medium text-sm sm:text-base text-[#382015]">Sin azúcar</span>
                 <span className="w-6 h-6 rounded-full border border-[#382015] flex items-center justify-center text-xs group-hover:bg-[#382015] group-hover:text-white transition-colors">
                   →
                 </span>
@@ -934,19 +878,10 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               }}
               className="bg-[#D9E8D4] hover:bg-[#CBDEC5] rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md group border border-[#C5D9BE]"
             >
-              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
-                <img
-                  src="https://images.unsplash.com/photo-1597528662465-55ece5734101?auto=format&fit=crop&w=600&q=80"
-                  alt="Colección Integrales"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
-                  }}
-                />
+              <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-2xl bg-[#EAE6DF] border border-black/5 flex items-center justify-center">
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm sm:text-base text-[#382015]">Integrales</span>
+                <span className="font-medium text-sm sm:text-base text-[#382015]">Integrales</span>
                 <span className="w-6 h-6 rounded-full border border-[#382015] flex items-center justify-center text-xs group-hover:bg-[#382015] group-hover:text-white transition-colors">
                   →
                 </span>
@@ -1046,23 +981,15 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                         key={id}
                         className="bg-white rounded-xl p-3 border border-[#EAE0D5] flex items-center gap-3 shadow-xs"
                       >
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-16 h-16 rounded-lg object-cover bg-amber-50"
-                          referrerPolicy="no-referrer"
-                          onError={(e) => {
-                            e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80";
-                          }}
-                        />
+                        <div className="w-16 h-16 rounded-xl bg-[#EAE6DF] shrink-0 border border-[#E0DBD2]/50 flex items-center justify-center" />
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-bold text-xs text-[#382015] truncate">
+                          <h4 className="font-medium text-xs text-[#382015] truncate">
                             {product.name}
                           </h4>
-                          <div className="text-xs font-extrabold text-[#BA2A5D] mt-0.5">
-                            S/ {(product.price * Number(qty)).toFixed(2)}
+                          <div className="text-xs font-medium text-[#2C1810] mt-0.5">
+                            ${(product.price * Number(qty)).toFixed(2)}
                             <span className="text-[10px] text-gray-500 font-normal ml-1">
-                              (S/ {product.price.toFixed(2)} c/u)
+                              (${product.price.toFixed(2)} c/u)
                             </span>
                           </div>
 
