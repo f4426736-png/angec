@@ -428,8 +428,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="w-full flex justify-center items-center py-6 px-4">
-        <div className="w-full max-w-[1280px] flex flex-col lg:flex-row gap-8 items-start justify-center mx-auto">
+      <div id="storeProductsGrid" className="w-full flex justify-center items-center py-6 px-4 sm:px-8 lg:px-12">
+        <div className="w-full max-w-[1536px] flex flex-col lg:flex-row gap-8 items-start justify-center mx-auto">
           {/* Mobile filter button & count bar */}
           <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE0D5] w-full">
             <button
@@ -447,7 +447,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL
              ========================================================= */}
-          <aside className="hidden lg:block w-[260px] shrink-0 bg-white border border-[#EAE0D5] rounded-2xl p-5 shadow-xs sticky top-20">
+          <aside className="hidden lg:block w-[280px] shrink-0 bg-white border border-[#EAE0D5] rounded-2xl p-5 shadow-xs sticky top-20">
             <div className="border-b border-[#EAE0D5] pb-3 mb-4 flex items-center justify-between">
               <h2 className="text-sm font-extrabold tracking-wider text-[#382015] uppercase">
                 FILTRAR POR
@@ -714,7 +714,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 min-[1300px]:grid-cols-5 2xl:grid-cols-5 gap-3.5 sm:gap-4 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5 w-full">
                 {displayedProducts.map((cookie) => {
                   const isFav = favorites.has(cookie.id);
                   const isBestSeller = cookie.badge === 'Más vendido';
@@ -821,8 +821,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* =============================================================
           COLECCIONES DESTACADAS (Centered with the same max-w and margins)
          ============================================================= */}
-      <div className="w-full flex justify-center items-center px-4">
-        <section className="w-full max-w-[1280px] mx-auto mt-10 sm:mt-14 pt-8 border-t border-[#EAE0D5]">
+      <div className="w-full flex justify-center items-center px-4 sm:px-8 lg:px-12">
+        <section className="w-full max-w-[1536px] mx-auto mt-10 sm:mt-14 pt-8 border-t border-[#EAE0D5]">
           {/* Header with decorative double arrows */}
           <div className="text-center mb-8">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#382015] tracking-tight font-serif inline-flex items-center gap-3">
