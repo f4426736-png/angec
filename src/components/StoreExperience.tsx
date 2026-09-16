@@ -441,22 +441,22 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="w-full flex justify-center items-center py-6 px-4 sm:px-8 lg:px-12">
-        <div className="w-full max-w-[1580px] flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center mx-auto">
-          {/* Mobile filter button & count bar */}
-          <div className="lg:hidden flex items-center justify-between mb-2 pb-3 border-b border-[#EAE4DC] w-full">
-            <button
-              onClick={() => setMobileFilterOpen(true)}
-              className="inline-flex items-center gap-2 bg-[#F8F6F2] border border-[#EAE4DC] px-4 py-2 rounded-xl text-xs font-bold text-[#2C1810]"
-            >
-              <SlidersHorizontal className="w-4 h-4 text-[#2C1810]" />
-              <span>FILTRAR POR</span>
-            </button>
-            <span className="text-xs font-medium text-[#7A6456]">
-              {filteredProducts.length} productos
-            </span>
-          </div>
+      <div id="storeProductsGrid" className="w-full max-w-[1400px] mx-auto px-6 py-8">
+        {/* Mobile filter button & count bar */}
+        <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE4DC] w-full">
+          <button
+            onClick={() => setMobileFilterOpen(true)}
+            className="inline-flex items-center gap-2 bg-[#F8F6F2] border border-[#EAE4DC] px-4 py-2 rounded-xl text-xs font-bold text-[#2C1810]"
+          >
+            <SlidersHorizontal className="w-4 h-4 text-[#2C1810]" />
+            <span>FILTRAR POR</span>
+          </button>
+          <span className="text-xs font-medium text-[#7A6456]">
+            {filteredProducts.length} productos
+          </span>
+        </div>
 
+        <div className="flex gap-8 items-start">
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL (Exact Reference Layout)
              ========================================================= */}
@@ -832,8 +832,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* =============================================================
           COLECCIONES DESTACADAS (Centered with the same max-w and margins)
          ============================================================= */}
-      <div className="w-full flex justify-center items-center px-4 sm:px-8 lg:px-12">
-        <section className="w-full max-w-[1580px] mx-auto mt-10 sm:mt-14 pt-8 border-t border-[#EAE4DC]">
+      <div className="w-full max-w-[1400px] mx-auto px-6">
+        <section className="w-full mt-10 sm:mt-14 pt-8 border-t border-[#EAE4DC]">
           {/* Header with decorative double arrows */}
           <div className="text-center mb-8">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#382015] tracking-tight font-serif inline-flex items-center gap-3">
