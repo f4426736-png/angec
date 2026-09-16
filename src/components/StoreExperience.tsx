@@ -428,7 +428,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="max-w-[1400px] mx-auto px-6 sm:px-10 py-8">
+      <div id="storeProductsGrid" className="w-full max-w-[1300px] mx-auto px-4 sm:px-6 py-6">
         {/* Mobile filter button & count bar */}
         <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE0D5]">
           <button
@@ -443,7 +443,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           </span>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
+        <div className="flex flex-col lg:flex-row gap-8 items-start justify-center w-full">
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL
              ========================================================= */}
