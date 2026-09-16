@@ -55,7 +55,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     rating: 4.5,
     ratingCount: 142,
     badge: 'Más vendido',
-    image: '/src/assets/images/cookies_milk_tower_1789517244986.jpg',
+    image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
     description: 'Nuestra receta insignia con mantequilla dorada y abundantes chispas de chocolate belga semi-amargo.'
   },
   {
@@ -68,7 +68,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     rating: 4.7,
     ratingCount: 98,
     badge: 'Nuevo',
-    image: '/src/assets/images/chocolate_cookies_pile_1789517259017.jpg',
+    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80',
     description: 'Intensa masa de cacao puro horneada con trozos de chocolate negro fundente.'
   },
   {
@@ -80,7 +80,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 6.90,
     rating: 4.6,
     ratingCount: 112,
-    image: '/src/assets/images/oreo_stuffed_cookie_1789528866846.jpg',
+    image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=800&q=80',
     description: 'Crujiente masa artesanal rellena con una galleta Oreo entera y crema de vainilla.'
   },
   {
@@ -92,7 +92,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 6.50,
     rating: 4.4,
     ratingCount: 64,
-    image: '/src/assets/images/strawberry_cookie_1789517307657.jpg',
+    image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=800&q=80',
     description: 'Delicada galleta horneada con trozos de fresas naturales y chocolate blanco.'
   },
   {
@@ -104,7 +104,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 5.90,
     rating: 4.3,
     ratingCount: 87,
-    image: '/oatmeal-raisin.png',
+    image: 'https://images.unsplash.com/photo-1597528662465-55ece5734101?auto=format&fit=crop&w=800&q=80',
     description: 'Avena integral de grano entero, un toque de canela ceilán y pasas rubias jugosas.'
   },
   {
@@ -116,7 +116,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 6.50,
     rating: 4.6,
     ratingCount: 104,
-    image: '/src/assets/images/peanut_butter_cookie_1789517293237.jpg',
+    image: 'https://images.unsplash.com/photo-1548848221-0c2e497ed557?auto=format&fit=crop&w=800&q=80',
     description: 'Mantequilla de maní tostado artesanal con su clásico entramado tradicional y pizca de sal marina.'
   },
   {
@@ -128,7 +128,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 6.50,
     rating: 4.4,
     ratingCount: 73,
-    image: '/src/assets/images/lemon_crinkle_cookie_1789517327460.jpg',
+    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80',
     description: 'Frescura cítrica con ralladura de limón amarillo y suave cubierta craquelada con azúcar glas.'
   },
   {
@@ -140,7 +140,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 7.50,
     rating: 4.6,
     ratingCount: 135,
-    image: '/src/assets/images/red_velvet_cookie_1789517277288.jpg',
+    image: 'https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&w=800&q=80',
     description: 'Masa aterciopelada de cacao rojo con centro suave de crema de queso y chispas blancas.'
   },
   {
@@ -152,7 +152,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 7.50,
     rating: 4.5,
     ratingCount: 89,
-    image: '/src/assets/images/walnut_cookie_1789528904769.jpg',
+    image: 'https://images.unsplash.com/photo-1548365328-8c6db3220e4c?auto=format&fit=crop&w=800&q=80',
     description: 'Equilibrio perfecto entre chocolate fundido y nueces crocantes tostadas al punto.'
   },
   {
@@ -164,7 +164,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 6.00,
     rating: 4.2,
     ratingCount: 52,
-    image: '/src/assets/images/coconut_cookie_1789528881289.jpg',
+    image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80',
     description: 'Horneadas con coco rallado dorado, textura tierna por dentro y crocante por fuera.'
   },
   {
@@ -176,7 +176,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 7.50,
     rating: 4.7,
     ratingCount: 161,
-    image: '/src/assets/images/caramel_filled_cookie_1789517343702.jpg',
+    image: 'https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?auto=format&fit=crop&w=800&q=80',
     description: 'Sorprendente corazón líquido de dulce de caramelo salado derretido al primer mordisco.'
   },
   {
@@ -188,7 +188,7 @@ export const STORE_COOKIES: CookieProduct[] = [
     price: 6.50,
     rating: 4.3,
     ratingCount: 68,
-    image: '/src/assets/images/coffee_mocha_cookie_1789528893426.jpg',
+    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
     description: 'Aroma seductor de café espresso peruano con perlas de chocolate negro.'
   }
 ];

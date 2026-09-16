@@ -354,10 +354,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               {/* Milk Glass and Cookies stack arrangement */}
               <div className="w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-3xl overflow-hidden shadow-xl border-4 border-white/80 bg-amber-50">
                 <img
-                  src="/src/assets/images/cookies_milk_tower_1789517244986.jpg"
+                  src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80"
                   alt="Torre de Galletas con Leche"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80";
+                  }}
                 />
               </div>
               {/* Floating chocolate chunks decorative badge */}
@@ -418,10 +421,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             <div className="relative group">
               <div className="w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-3xl overflow-hidden shadow-xl border-4 border-white/80 bg-amber-50">
                 <img
-                  src="/src/assets/images/chocolate_cookies_pile_1789517259017.jpg"
+                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80"
                   alt="Variedad de Galletas"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80";
+                  }}
                 />
               </div>
               <div className="absolute -bottom-3 -left-3 bg-white/95 backdrop-blur-sm border border-[#E8DDD0] rounded-2xl p-2.5 shadow-lg flex items-center gap-2">
@@ -711,6 +717,9 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"
                           loading="lazy"
                           referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80";
+                          }}
                         />
 
                         {/* Top Badges */}
@@ -817,10 +826,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             >
               <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
                 <img
-                  src="/src/assets/images/cookies_milk_tower_1789517244986.jpg"
+                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80"
                   alt="Colección Clásicas"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80";
+                  }}
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -841,10 +853,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             >
               <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
                 <img
-                  src="/src/assets/images/oreo_stuffed_cookie_1789528866846.jpg"
+                  src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80"
                   alt="Colección Rellenas"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
+                  }}
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -865,10 +880,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             >
               <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
                 <img
-                  src="/src/assets/images/lemon_crinkle_cookie_1789517327460.jpg"
+                  src="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=600&q=80"
                   alt="Colección Sin Azúcar"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
+                  }}
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -889,10 +907,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             >
               <div className="w-28 h-28 sm:w-32 sm:h-32 mb-3 rounded-full overflow-hidden shadow-sm">
                 <img
-                  src="/oatmeal-raisin.png"
+                  src="https://images.unsplash.com/photo-1597528662465-55ece5734101?auto=format&fit=crop&w=600&q=80"
                   alt="Colección Integrales"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
+                  }}
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -1004,6 +1025,9 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                           alt={product.name}
                           className="w-16 h-16 rounded-lg object-cover bg-amber-50"
                           referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80";
+                          }}
                         />
                         <div className="flex-1 min-w-0">
                           <h4 className="font-bold text-xs text-[#382015] truncate">
