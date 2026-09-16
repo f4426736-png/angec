@@ -460,7 +460,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL (Exact Reference Layout)
              ========================================================= */}
-          <aside className="hidden lg:block w-[260px] shrink-0 bg-[#F8F6F2] border border-[#EBE6DE] rounded-2xl p-5 shadow-xs sticky top-20">
+          <aside className="w-[280px] shrink-0 bg-[#F8F6F2] p-6 rounded-2xl border border-[#EAE4DC] space-y-6">
             <div className="pb-3 mb-3 border-b border-[#EAE4DC]/60 flex items-center justify-between">
               <h2 className="text-xs font-black tracking-wider text-[#2C1810] uppercase">
                 FILTRAR POR
@@ -645,8 +645,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
              ========================================================= */}
           <main className="flex-1 min-w-0 w-full space-y-6">
             
-            {/* 1. TOP HERO BANNER (Cream/Grey #F3EFEA with Cookies & Chocolate display) */}
-            <div className="w-full bg-[#F3EFEA] border border-[#E8E2D9] rounded-2xl overflow-hidden flex flex-col md:flex-row items-center justify-between relative shadow-2xs">
+            {/* 1. TOP HERO BANNER */}
+            <div className="w-full bg-[#F3EFEA] rounded-2xl overflow-hidden flex justify-between items-center min-h-[220px]">
               {/* Left text content */}
               <div className="p-6 sm:p-8 md:p-10 z-10 max-w-xl">
                 <span className="text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-2">
@@ -670,63 +670,50 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               </div>
 
               {/* Right image display (cookies stack & chocolate) */}
-              <div className="w-full md:w-1/2 h-56 md:h-72 relative overflow-hidden flex items-center justify-center">
+              <div className="w-full md:w-1/2 h-full flex items-center justify-end">
                 <img
                   src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=80"
                   alt="Dulces momentos en cada bocado"
-                  className="w-full h-full object-cover object-center"
+                  className="h-full max-h-[220px] object-cover"
                   referrerPolicy="no-referrer"
                   onError={(e) => {
                     e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1000&q=80";
                   }}
                 />
-                {/* Soft gradient edge transition */}
-                <div className="hidden md:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#F3EFEA] to-transparent pointer-events-none" />
               </div>
             </div>
 
-            {/* 2. QUICK CATEGORY PILLS + SORT BAR */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
-              {/* Pills: Todo, Galletas, Postres, Bebidas, Promociones */}
-              <div className="flex flex-wrap items-center gap-2.5">
-                {[
-                  { name: 'Todo', value: 'Todo' },
-                  { name: 'Galletas', value: 'Galletas' },
-                  { name: 'Postres', value: 'Postres' },
-                  { name: 'Bebidas', value: 'Bebidas' },
-                  { name: 'Promociones', value: 'Promociones' }
-                ].map((tab) => {
-                  const isActive = selectedQuickTab === tab.value;
+            {/* 2. Pestañas superiores (Pills) */}
+            <div className="flex gap-2 mb-6 flex-wrap items-center">
+              {[
+                { name: 'Todo', value: 'Todo' },
+                { name: 'Galletas', value: 'Galletas' },
+                { name: 'Postres', value: 'Postres' },
+                { name: 'Bebidas', value: 'Bebidas' },
+                { name: 'Promociones', value: 'Promociones' }
+              ].map((tab) => {
+                const isActive = selectedQuickTab === tab.value;
+                if (isActive) {
                   return (
                     <button
                       key={tab.value}
                       onClick={() => handleQuickTabSelect(tab.value)}
-                      className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 cursor-pointer ${
-                        isActive
-                          ? 'bg-[#2B2B2B] text-white shadow-sm'
-                          : 'bg-white text-gray-700 hover:bg-[#F7F5F0] border border-[#EAE4DC] shadow-sm'
-                      }`}
+                      className="px-5 py-2 bg-[#222222] text-white rounded-full text-sm font-medium cursor-pointer"
                     >
                       {tab.name}
                     </button>
                   );
-                })}
-              </div>
-
-              {/* Ordenar por selector */}
-              <div className="flex items-center gap-2 self-end sm:self-auto text-xs font-medium text-[#4A3225]">
-                <span className="text-[#7A6456] text-xs">Ordenar por</span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-white border border-[#EAE4DC] rounded-xl px-3 py-1.5 text-xs text-[#2C1810] font-medium focus:outline-none focus:border-[#2C1810] cursor-pointer shadow-2xs"
-                >
-                  <option value="popular">Más populares</option>
-                  <option value="price-asc">Menor precio</option>
-                  <option value="price-desc">Mayor precio</option>
-                  <option value="rating">Mejor valoradas</option>
-                </select>
-              </div>
+                }
+                return (
+                  <button
+                    key={tab.value}
+                    onClick={() => handleQuickTabSelect(tab.value)}
+                    className="px-5 py-2 bg-white text-gray-700 rounded-full text-sm font-medium border border-gray-200 hover:bg-gray-50 cursor-pointer"
+                  >
+                    {tab.name}
+                  </button>
+                );
+              })}
             </div>
 
             {/* 3. PRODUCTS GRID (EXACT 5 COLUMNS ON LARGE SCREENS) */}
@@ -762,11 +749,11 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                       className="bg-white rounded-xl border border-[#EAE4DC]/80 overflow-hidden shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
                     >
                       {/* Top Image container */}
-                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+                      <div className="relative w-full overflow-hidden bg-white">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-40 object-cover rounded-t-xl"
                           loading="lazy"
                           referrerPolicy="no-referrer"
                           onError={(e) => {
