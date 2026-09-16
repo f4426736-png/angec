@@ -460,7 +460,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL (Exact Reference Layout)
              ========================================================= */}
-          <aside className="hidden lg:block w-[240px] shrink-0 bg-[#F8F6F2] border border-[#EBE6DE] rounded-2xl p-5 shadow-xs sticky top-20">
+          <aside className="hidden lg:block w-[260px] shrink-0 bg-[#F8F6F2] border border-[#EBE6DE] rounded-2xl p-5 shadow-xs sticky top-20">
             <div className="pb-3 mb-3 border-b border-[#EAE4DC]/60 flex items-center justify-between">
               <h2 className="text-xs font-black tracking-wider text-[#2C1810] uppercase">
                 FILTRAR POR
@@ -688,7 +688,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             {/* 2. QUICK CATEGORY PILLS + SORT BAR */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
               {/* Pills: Todo, Galletas, Postres, Bebidas, Promociones */}
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2.5">
                 {[
                   { name: 'Todo', value: 'Todo' },
                   { name: 'Galletas', value: 'Galletas' },
@@ -701,10 +701,10 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                     <button
                       key={tab.value}
                       onClick={() => handleQuickTabSelect(tab.value)}
-                      className={`px-5 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
+                      className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 cursor-pointer ${
                         isActive
-                          ? 'bg-[#24140D] text-white shadow-xs font-semibold'
-                          : 'bg-white hover:bg-[#EFEAE2] text-[#4A3225] border border-[#EAE4DC]'
+                          ? 'bg-[#2B2B2B] text-white shadow-sm'
+                          : 'bg-white text-gray-700 hover:bg-[#F7F5F0] border border-[#EAE4DC] shadow-sm'
                       }`}
                     >
                       {tab.name}
@@ -762,7 +762,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                       className="bg-white rounded-xl border border-[#EAE4DC]/80 overflow-hidden shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
                     >
                       {/* Top Image container */}
-                      <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#FAF6F0]">
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
                         <img
                           src={product.image}
                           alt={product.name}
