@@ -634,10 +634,10 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               RIGHT COLUMN: BANNER + QUICK PILLS + 5-COLUMN GRID
              ========================================================= */}
-          <main className="flex-1 min-w-0 w-full space-y-5">
+          <main className="flex-1 w-full min-w-0 space-y-6">
             
             {/* 1. TOP HERO BANNER */}
-            <div className="h-[180px] w-full rounded-2xl bg-[#F3EFEA] p-8 flex justify-between items-center overflow-hidden border border-[#EAE4DC]/60">
+            <div className="w-full h-[180px] rounded-2xl bg-[#F3EFEA] p-8 flex justify-between items-center overflow-hidden border border-[#EAE4DC]/60">
               {/* Left text content */}
               <div className="z-10 max-w-xl">
                 <span className="text-[10px] sm:text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-1">
@@ -666,7 +666,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* 2. Pestañas superiores (Pills) */}
-            <div className="flex gap-2 mb-6 flex-wrap items-center">
+            <div className="flex gap-2 mb-6 flex-wrap items-center w-full">
               {[
                 { name: 'Todo', value: 'Todo' },
                 { name: 'Galletas', value: 'Galletas' },
@@ -700,7 +700,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
 
             {/* 3. PRODUCTS GRID (EXACT 5 COLUMNS ON LARGE SCREENS) */}
             {displayedProducts.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-[#EAE4DC] p-12 text-center my-6">
+              <div className="w-full bg-white rounded-2xl border border-[#EAE4DC] p-12 text-center my-6">
                 <div className="text-5xl mb-3">🍪</div>
                 <h3 className="text-base font-bold text-[#2C1810] mb-1">No se encontraron productos</h3>
                 <p className="text-xs text-[#7A6456] max-w-md mx-auto mb-4">
@@ -721,14 +721,14 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full">
                 {displayedProducts.map((product) => {
                   const isFav = favorites.has(product.id);
 
                   return (
                     <article
                       key={product.id}
-                      className="bg-[#F8F6F2] p-2.5 rounded-3xl space-y-2 border border-[#EAE4DC]/60 overflow-hidden hover:shadow-sm transition-all duration-200 flex flex-col justify-between group"
+                      className="w-full bg-[#F8F6F2] p-2.5 rounded-3xl space-y-2 border border-[#EAE4DC]/60 overflow-hidden hover:shadow-sm transition-all duration-200 flex flex-col justify-between group"
                     >
                       {/* Top Image placeholder (Replaces automatic image search/generation) */}
                       <div className="relative h-28 w-full rounded-2xl bg-[#EAE6DF] overflow-hidden flex items-center justify-center shrink-0">
