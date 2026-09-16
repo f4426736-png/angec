@@ -290,8 +290,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           TOP BAR NAVIGATION (Matches exact reference header)
          ------------------------------------------------------------- */}
-      <header className="sticky top-0 z-50 w-full bg-[#F6F4EE] backdrop-blur-md border-b border-[#EAE4DC] transition-all">
-        <div className="w-full max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-50 w-full bg-white/95 sm:bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#EAE4DC] transition-all">
+        <div className="w-full max-w-[1600px] mx-auto px-8 h-16 flex items-center justify-between">
           {/* Logo (Izquierda) */}
           <div className="flex items-center">
             <button
@@ -308,7 +308,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </button>
           </div>
 
-          {/* Menú Central: Inicio, About, Top Cookies, March, Store */}
+          {/* Menú Central: Inicio, About, Top Cookies, Merch, Store */}
           <nav className="hidden md:flex items-center justify-center gap-7 lg:gap-10 text-xs sm:text-[13px] font-medium text-[#4A3225] shrink-0">
             <button
               onClick={onBackToHome}
@@ -337,14 +337,14 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               Top Cookies
             </a>
             <a
-              href="#march"
+              href="#hola"
               onClick={(e) => {
                 e.preventDefault();
-                window.location.hash = '#march';
+                window.location.hash = '#hola';
               }}
               className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
             >
-              March
+              Merch
             </a>
             {/* Store (Activo con subrayado sobrio) */}
             <div className="relative inline-flex flex-col items-center py-1">
@@ -414,8 +414,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
 
         {/* Input desplegable de búsqueda rápida */}
         {isNavSearchOpen && (
-          <div className="w-full bg-[#F6F4EE] border-t border-[#EAE4DC] px-6 py-2.5 transition-all">
-            <div className="max-w-[1400px] mx-auto relative">
+          <div className="w-full bg-white sm:bg-[#FAF8F5] border-t border-[#EAE4DC] px-8 py-2.5 transition-all">
+            <div className="max-w-[1600px] mx-auto relative">
               <Search className="w-4 h-4 text-[#8C7667] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
@@ -441,7 +441,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="w-full max-w-[1400px] mx-auto px-6 py-8">
+      <div id="storeProductsGrid" className="w-full max-w-[1600px] mx-auto px-8 py-6">
         {/* Mobile filter button & count bar */}
         <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE4DC] w-full">
           <button
@@ -460,7 +460,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL (Exact Reference Layout)
              ========================================================= */}
-          <aside className="w-[280px] shrink-0 bg-[#F8F6F2] p-6 rounded-2xl border border-[#EAE4DC] space-y-6">
+          <aside className="w-[260px] shrink-0 bg-[#F7F5F0] p-6 rounded-2xl border border-[#EAE4DC] space-y-6">
             <div className="pb-3 mb-3 border-b border-[#EAE4DC]/60 flex items-center justify-between">
               <h2 className="text-xs font-black tracking-wider text-[#2C1810] uppercase">
                 FILTRAR POR
@@ -643,26 +643,26 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               RIGHT COLUMN: BANNER + QUICK PILLS + 5-COLUMN GRID
              ========================================================= */}
-          <main className="flex-1 min-w-0 w-full space-y-6">
+          <main className="flex-1 min-w-0 space-y-6">
             
             {/* 1. TOP HERO BANNER */}
-            <div className="w-full bg-[#F3EFEA] rounded-2xl overflow-hidden flex justify-between items-center min-h-[220px]">
+            <div className="w-full rounded-2xl overflow-hidden bg-[#F3EFEA] flex justify-between items-center h-[200px]">
               {/* Left text content */}
-              <div className="p-6 sm:p-8 md:p-10 z-10 max-w-xl">
-                <span className="text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-2">
+              <div className="p-6 sm:p-7 md:p-8 z-10 max-w-xl">
+                <span className="text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-1">
                   GALLETAS &amp; POSTRES
                 </span>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#2C1810] leading-tight font-serif tracking-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#2C1810] leading-tight font-serif tracking-tight">
                   Dulces momentos,
                   <br />
                   en cada bocado
                 </h1>
-                <p className="mt-2.5 text-xs sm:text-sm text-[#7A6456] max-w-md">
+                <p className="mt-1 text-xs text-[#7A6456] max-w-md hidden sm:block line-clamp-1">
                   Descubre nuestras galletas artesanales y postres hechos con ingredientes de la mejor calidad.
                 </p>
                 <button
                   onClick={handleScrollToGrid}
-                  className="mt-5 inline-flex items-center gap-2 bg-[#2C1810] hover:bg-[#1C0F0A] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
+                  className="mt-3 inline-flex items-center gap-2 bg-[#2C1810] hover:bg-[#1C0F0A] text-white text-xs font-semibold px-4 py-2 rounded-full transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
                 >
                   <span>Ver colección</span>
                   <span>→</span>
@@ -674,7 +674,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 <img
                   src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=80"
                   alt="Dulces momentos en cada bocado"
-                  className="h-full max-h-[220px] object-cover"
+                  className="h-full object-cover max-h-[200px]"
                   referrerPolicy="no-referrer"
                   onError={(e) => {
                     e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1000&q=80";
@@ -739,7 +739,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {displayedProducts.map((product) => {
                   const isFav = favorites.has(product.id);
 
@@ -832,7 +832,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* =============================================================
           COLECCIONES DESTACADAS (Centered with the same max-w and margins)
          ============================================================= */}
-      <div className="w-full max-w-[1400px] mx-auto px-6">
+      <div className="w-full max-w-[1600px] mx-auto px-8">
         <section className="w-full mt-10 sm:mt-14 pt-8 border-t border-[#EAE4DC]">
           {/* Header with decorative double arrows */}
           <div className="text-center mb-8">
