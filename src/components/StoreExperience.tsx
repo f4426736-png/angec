@@ -265,26 +265,28 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       )}
 
       {/* -------------------------------------------------------------
-          TOP BAR NAVIGATION (Cream Navbar matching reference design)
+          TOP BAR NAVIGATION (Cream Navbar - Full Width & Centered)
          ------------------------------------------------------------- */}
-      <header className="sticky top-0 z-40 w-full bg-[#FAF6F0]/95 backdrop-blur-md border-b border-[#EAE0D5] transition-all shadow-xs">
-        <div className="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3.5 sm:py-4 gap-4">
-          {/* Logo (Izquierda): Icono de galleta + Cookie Planet ♥ en marrón chocolate */}
-          <button
-            onClick={onBackToHome}
-            className="flex items-center gap-2 group cursor-pointer select-none bg-transparent border-none p-0 focus:outline-none transition-transform active:scale-98 shrink-0"
-            title="Cookie Planet ♥ - Volver al Inicio"
-          >
-            <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#5A3828]/10 flex items-center justify-center text-[#5A3828] group-hover:bg-[#BA2A5D]/10 group-hover:text-[#BA2A5D] transition-colors">
-              <Cookie className="w-5 h-5 sm:w-5.5 sm:h-5.5 fill-[#5A3828]/15 text-[#5A3828] group-hover:text-[#BA2A5D] transition-colors" />
-            </span>
-            <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-[#382015] flex items-center gap-1">
-              Cookie Planet <span className="text-[#BA2A5D] text-base sm:text-lg">♥</span>
-            </span>
-          </button>
+      <header className="sticky top-0 z-50 w-full bg-[#FAF6F0] backdrop-blur-md border-b border-[#EAE0D5] transition-all shadow-xs">
+        <div className="w-full px-6 py-3 flex items-center justify-between gap-4">
+          {/* Logo (Izquierda): Alineado completamente a la izquierda */}
+          <div className="flex-1 flex items-center justify-start">
+            <button
+              onClick={onBackToHome}
+              className="flex items-center gap-2 group cursor-pointer select-none bg-transparent border-none p-0 focus:outline-none transition-transform active:scale-98 shrink-0"
+              title="Cookie Planet ♥ - Volver al Inicio"
+            >
+              <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#5A3828]/10 flex items-center justify-center text-[#5A3828] group-hover:bg-[#BA2A5D]/10 group-hover:text-[#BA2A5D] transition-colors">
+                <Cookie className="w-5 h-5 sm:w-5.5 sm:h-5.5 fill-[#5A3828]/15 text-[#5A3828] group-hover:text-[#BA2A5D] transition-colors" />
+              </span>
+              <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-[#382015] flex items-center gap-1">
+                Cookie Planet <span className="text-[#BA2A5D] text-base sm:text-lg">♥</span>
+              </span>
+            </button>
+          </div>
 
-          {/* Menú Central: Inicio, About, Top Cookies, Merch, Store (con subrayado magenta activo) */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs sm:text-sm font-semibold text-[#5A3828]">
+          {/* Menú Central: Inicio, About, Top Cookies, Merch, Store (Centrado en la pantalla) */}
+          <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-8 text-xs sm:text-sm font-semibold text-[#5A3828] shrink-0">
             <button
               onClick={onBackToHome}
               className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
@@ -330,8 +332,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
           </nav>
 
-          {/* Herramientas (Derecha): Lupa, Corazón con badge rosa (2), Botón magenta redondeado tipo píldora */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+          {/* Herramientas (Derecha): Pegadas totalmente a la derecha */}
+          <div className="flex-1 flex items-center justify-end gap-2.5 sm:gap-3.5 shrink-0">
             {/* Icono de Lupa (Búsqueda) */}
             <button
               onClick={() => {
