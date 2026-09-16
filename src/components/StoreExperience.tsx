@@ -368,28 +368,26 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       </header>
 
       {/* -------------------------------------------------------------
-          HERO BANNER (Using provided Cloudinary banner image directly)
+          HERO BANNER (Full-width banner across the screen)
          ------------------------------------------------------------- */}
       <section className="relative w-full overflow-hidden bg-[#F8EFE4] border-b border-[#E8DDD0]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-[#E8DDD0] bg-[#F7EFE4] group">
-            <img
-              src="https://res.cloudinary.com/yxbhso8s/image/upload/v1789532304/ChatGPT_Image_15_sept_2026_11_17_45_p.m.png"
-              alt="Diferentes sabores, la misma felicidad - Galletas artesanales"
-              className="w-full h-auto object-cover block"
-              referrerPolicy="no-referrer"
-              loading="eager"
-            />
-            {/* Clickable CTA overlay positioned right over or accessible for users */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <button
-                onClick={handleScrollToGrid}
-                aria-label="Comprar ahora galletas artesanales"
-                className="pointer-events-auto opacity-0 hover:opacity-10 focus:opacity-100 transition-opacity absolute bottom-[18%] sm:bottom-[20%] md:bottom-[22%] bg-[#BA2A5D] text-white text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3.5 rounded-full shadow-lg cursor-pointer"
-              >
-                COMPRAR AHORA
-              </button>
-            </div>
+        <div className="relative w-full group">
+          <img
+            src="https://res.cloudinary.com/yxbhso8s/image/upload/v1789532304/ChatGPT_Image_15_sept_2026_11_17_45_p.m.png"
+            alt="Diferentes sabores, la misma felicidad - Galletas artesanales"
+            className="w-full h-auto block object-cover"
+            referrerPolicy="no-referrer"
+            loading="eager"
+          />
+          {/* Clickable CTA overlay positioned right over or accessible for users */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <button
+              onClick={handleScrollToGrid}
+              aria-label="Comprar ahora galletas artesanales"
+              className="pointer-events-auto opacity-0 hover:opacity-10 focus:opacity-100 transition-opacity absolute bottom-[18%] sm:bottom-[20%] md:bottom-[22%] bg-[#BA2A5D] text-white text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3.5 rounded-full shadow-lg cursor-pointer"
+            >
+              COMPRAR AHORA
+            </button>
           </div>
         </div>
       </section>
