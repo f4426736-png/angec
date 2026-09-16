@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Cookie Planet — Dulzura y felicidad en cada bocado</title>
+    <meta name="description" content="Cookie Planet web experience with interactive scroll-scrubbed background video, seamless view transitions between Home, About, and full-screen Projects view." />
+    <meta property="og:title" content="Cookie Planet — Dulzura y felicidad en cada bocado" />
+    <meta property="og:description" content="Cookie Planet web experience with interactive scroll-scrubbed background video, seamless view transitions between Home, About, and full-screen Projects view." />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Pacifico&family=Geist:wght@300;400;500;600;700;800&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --fg: #ffffff;
+        --fg-soft: rgba(255, 255, 255, 0.72);
+        --fg-faint: rgba(255, 255, 255, 0.44);
+        --bg-dark: #0f1011;
+        --accent-orange: #ff5b26;
+        --accent-glow: rgba(255, 91, 38, 0.28);
+        --rule: rgba(255, 255, 255, 0.12);
+        --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+        background: var(--bg-dark);
+      }
+
+      body {
+        background: transparent;
+        color: var(--fg);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+
+      /* 1. Fixed Background Video Layer (Animación de desplazamiento existente) */
+      .stage {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        background: var(--bg-dark);
+        pointer-events: none;
+      }
+
+      .stage video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        transform: translate(-50%, -50%) scale(1.02);
+        object-fit: cover;
+        will-change: transform;
+        opacity: 0.85;
+      }
+
+      /* Sutil viñeta para asegurar legibilidad impecable de textos y tarjetas */
+      .veil {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(to bottom, rgba(15, 16, 17, 0.45) 0%, rgba(15, 16, 17, 0.2) 20%, rgba(15, 16, 17, 0.5) 75%, rgba(15, 16, 17, 0.88) 100%),
+          radial-gradient(ellipse at 50% 35%, rgba(255, 75, 25, 0.14) 0%, rgba(15, 16, 17, 0.45) 100%);
+      }
+
+      .grain {
+        position: absolute;
+        inset: -50%;
+        opacity: 0.05;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.5'/></svg>");
+      }
+
+      /* Scroll Progress Bar */
+      .meter {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 90;
+        height: 3px;
+        width: 100%;
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        background: linear-gradient(90deg, #ff4500, #ff7a00);
+        opacity: 0.9;
+      }
+
+      /* 2. Main Scrollable Container (Sitting directly on top of video animation) */
+      .site-wrapper {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      /* Hide siteWrapper completely when dedicated views (About / Hola) are rendered */
+      body:has(#about-experience) #siteWrapper,
+      body:has(#prmptContainer) #siteWrapper {
+        display: none !important;
+      }
+
+      .content-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 clamp(20px, 4vw, 48px);
+      }
+
+      /* Header Navigation */
+      .nav-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 80;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px clamp(24px, 5vw, 64px);
+        background: transparent;
+        transition: background 0.3s ease;
+      }
+
+      .brand-logo {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+        text-decoration: none;
+      }
+
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: clamp(16px, 2.5vw, 32px);
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14.5px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+        position: relative;
+        padding: 4px 8px;
+        border-radius: 6px;
+      }
+
+      .nav-link:hover {
+        color: #ffffff;
+      }
+
+      .nav-link.active {
+        color: #ffffff;
+        font-weight: 700;
+      }
+
+      .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 8px;
+        right: 8px;
+        height: 2px;
+        background: var(--accent-orange);
+        border-radius: 2px;
+      }
+
+      .btn-contact-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #ffffff;
+        color: #0f1011;
+        padding: 8px 18px 8px 22px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      }
+
+      .btn-contact-nav:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(255, 255, 255, 0.18);
+      }
+
+      .btn-arrow-badge {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--accent-orange);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 100px;
+        padding-bottom: 60px;
+        position: relative;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: flex-end;
+        gap: 32px;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+
+      .hero-left {
+        max-width: 680px;
+      }
+
+      .hero-greeting {
+        font-size: clamp(16px, 1.8vw, 22px);
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 12px;
+        letter-spacing: -0.01em;
+      }
+
+      .hero-title {
+        font-size: clamp(48px, 9vw, 108px);
+        line-height: 0.92;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: #ffffff;
+        text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+      }
+
+      .hero-right-quote {
+        max-width: 320px;
+        text-align: left;
+        padding-bottom: 12px;
+      }
+
+      .quote-title {
+        font-size: clamp(18px, 1.8vw, 23px);
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+        margin-bottom: 10px;
+      }
+
+      .quote-desc {
+        font-size: 13.5px;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* Services 4-Column Bar */
+      .services-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding-top: 48px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        margin-top: 40px;
+      }
+
+      .service-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .service-number {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--accent-orange);
+        letter-spacing: 0.02em;
+      }
+
+      .service-name {
+        font-size: clamp(13px, 1.1vw, 15px);
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        letter-spacing: -0.01em;
+      }
+
+      /* Trusted Brands Strip */
+      .brands-bar-wrapper {
+        margin-top: 56px;
+        padding: 24px clamp(20px, 4vw, 40px);
+        border-radius: 20px;
+        background: rgba(18, 19, 21, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .brands-label {
+        font-size: 12.5px;
+        font-weight: 600;
+        line-height: 1.35;
+        color: rgba(255, 255, 255, 0.7);
+        max-width: 140px;
+      }
+
+      .brands-list {
+        display: flex;
+        align-items: center;
+        gap: clamp(24px, 4.5vw, 56px);
+        flex-wrap: wrap;
+      }
+
+      .brand-logo-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.02em;
+        opacity: 0.92;
+        transition: opacity 0.2s ease;
+      }
+
+      .brand-logo-item:hover {
+        opacity: 1;
+      }
+
+      .brand-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+      }
+
+      /* Section 2: Behind the Designs / Shaping Experiences */
+      .designs-section {
+        padding: clamp(80px, 12vh, 140px) 0 100px;
+      }
+
+      .designs-header {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 40px;
+        align-items: flex-start;
+        margin-bottom: clamp(40px, 6vh, 64px);
+      }
+
+      .badge-category {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--accent-orange);
+        margin-bottom: 14px;
+        letter-spacing: -0.01em;
+      }
+
+      .designs-headline {
+        font-size: clamp(34px, 4.8vw, 60px);
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        color: #ffffff;
+        max-width: 14ch;
+      }
+
+      .designs-right {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .designs-statement {
+        font-size: clamp(16px, 1.45vw, 20px);
+        line-height: 1.48;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.88);
+        letter-spacing: -0.015em;
+      }
+
+      .designs-action-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .action-subtext {
+        font-size: 13px;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.55);
+        font-weight: 500;
+      }
+
+      .btn-orange-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--accent-orange);
+        color: #ffffff;
+        padding: 8px 18px 8px 22px;
+        border-radius: 999px;
+        font-size: 13.5px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 4px 18px rgba(255, 91, 38, 0.35);
+        transition: transform 0.25s var(--ease), background 0.2s ease;
+      }
+
+      .btn-orange-pill:hover {
+        transform: translateY(-2px);
+        background: #ff6d3d;
+      }
+
+      .btn-orange-badge {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: var(--accent-orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+      }
+
+      /* Projects Gallery Cards (4 Columns) */
+      .projects-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: clamp(14px, 2vw, 24px);
+      }
+
+      .project-card {
+        position: relative;
+        border-radius: 26px;
+        overflow: hidden;
+        aspect-ratio: 3 / 4.4;
+        background: #181a1d;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.32);
+        transition: transform 0.35s var(--ease), border-color 0.3s ease;
+      }
+
+      .project-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .project-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: grayscale(100%) contrast(1.06);
+        transition: transform 0.6s var(--ease), filter 0.6s ease;
+      }
+
+      .project-card:hover img {
+        transform: scale(1.04);
+        filter: grayscale(85%) contrast(1.08);
+      }
+
+      .project-card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(15, 16, 17, 0.75) 0%, rgba(15, 16, 17, 0) 40%);
+        pointer-events: none;
+      }
+
+      .project-card-caption {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      /* Footer */
+      .site-footer {
+        padding: 40px 0 50px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      /* Preloader */
+      .boot {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        background: #0f1011;
+        transition: opacity 0.6s var(--ease), visibility 0.6s;
+      }
+
+      .boot.done {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .boot p {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 600;
+      }
+
+      .bar {
+        width: 140px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.15);
+        overflow: hidden;
+        border-radius: 2px;
+      }
+
+      .bar i {
+        display: block;
+        height: 100%;
+        width: 100%;
+        background: var(--accent-orange);
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        transition: transform 0.1s linear;
+      }
+
+      /* Dedicated About View (#view-about) */
+      .about-view-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: max(120px, 14vh) 0 80px;
+        position: relative;
+        animation: fadeInView 0.4s var(--ease) forwards;
+      }
+
+      @keyframes fadeInView {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .about-view-header {
+        max-width: 760px;
+        margin-bottom: clamp(32px, 5vh, 48px);
+      }
+
+      .about-view-title {
+        font-size: clamp(40px, 7.5vw, 84px);
+        line-height: 0.96;
+        font-weight: 800;
+        letter-spacing: -0.038em;
+        color: #ffffff;
+        margin-top: 10px;
+      }
+
+      .about-view-lead {
+        margin-top: 20px;
+        font-size: clamp(16px, 1.4vw, 20px);
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 60ch;
+      }
+
+      .about-two-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: clamp(20px, 3vw, 36px);
+        margin-top: 12px;
+      }
+
+      .about-feature-card {
+        border-radius: 28px;
+        background: rgba(18, 19, 21, 0.62);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: clamp(32px, 4.5vw, 48px);
+        transition: transform 0.35s var(--ease), border-color 0.3s ease, box-shadow 0.35s var(--ease);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .about-feature-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255, 91, 38, 0.4);
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+      }
+
+      .card-tag-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent-orange);
+        margin-bottom: 20px;
+      }
+
+      .card-headline {
+        font-size: clamp(24px, 2.6vw, 34px);
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+        margin-bottom: 14px;
+      }
+
+      .card-body-text {
+        font-size: 15px;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .btn-return-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 12px 24px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: background 0.2s ease, transform 0.25s var(--ease);
+        cursor: pointer;
+        width: fit-content;
+      }
+
+      .btn-return-home:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* View switching helper */
+      .view-hidden {
+        display: none !important;
+      }
+
+      /* ============================================================
+         Projects View (Kollektiva adapted to Cookie Planet)
+         Full-screen, clean scale, zero scroll, immersive member gallery
+         ============================================================ */
+      .font-geist {
+        font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      #viewProjects {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.90);
+      }
+
+      .kollektiva-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem; /* p-6 */
+        box-sizing: border-box;
+      }
+
+      @media (min-width: 768px) {
+        .kollektiva-container {
+          padding: 2.5rem; /* md:p-10 */
+        }
+      }
+
+      /* Background layers & images */
+      .kollektiva-bg-layer {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .kollektiva-bg-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .kollektiva-bg-slide.active {
+        opacity: 1;
+      }
+
+      /* Kollektiva gradient overlay: from-black/20 via-black/5 to-black/25 */
+      .kollektiva-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.40) 0%,
+          rgba(0, 0, 0, 0.10) 45%,
+          rgba(0, 0, 0, 0.65) 100%
+        );
+      }
+
+      /* Floating Back Button in top-left */
+      .kollektiva-back-btn {
+        position: relative;
+        z-index: 10;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18px;
+        border-radius: 9999px;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.30);
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        text-decoration: none;
+        cursor: pointer;
+        width: fit-content;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+      }
+
+      .kollektiva-back-btn:hover {
+        background: #ff5b26;
+        border-color: #ff5b26;
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+
+      /* Kollektiva content z-index */
+      .kollektiva-content-top {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      @media (min-width: 768px) {
+        .kollektiva-content-top {
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 32px;
+        }
+      }
+
+      /* Title H1: text-2xl sm:text-4xl md:text-5xl font-normal leading-tight max-w-lg text-white */
+      .kollektiva-title {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 400; /* font-normal */
+        line-height: 1.25; /* leading-tight */
+        color: #ffffff;
+        max-width: 32rem; /* max-w-lg */
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+
+      @media (min-width: 640px) {
+        .kollektiva-title {
+          font-size: 2.25rem; /* sm:text-4xl */
+        }
+      }
+
+      @media (min-width: 768px) {
+        .kollektiva-title {
+          font-size: 3rem; /* md:text-5xl */
+        }
+      }
+
+      /* Descriptive dynamic text: text-xs sm:text-sm text-white/80 max-w-xs */
+      .kollektiva-desc-wrap {
+        max-width: 20rem; /* max-w-xs */
+        margin-top: 4px;
+      }
+
+      .kollektiva-desc {
+        font-size: 0.75rem; /* text-xs */
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.80); /* text-white/80 */
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+        font-weight: 400;
+        margin: 0;
+      }
+
+      @media (min-width: 640px) {
+        .kollektiva-desc {
+          font-size: 0.875rem; /* sm:text-sm */
+        }
+      }
+
+      /* Fade in animation for dynamic texts */
+      @keyframes kollektivaFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fadeIn {
+        animation: kollektivaFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* Bottom section */
+      .kollektiva-bottom-section {
+        position: relative;
+        z-index: 5;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* Avatars Row (8 member circular buttons) */
+      .kollektiva-avatars-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 4px 2px;
+        scrollbar-width: none;
+      }
+
+      .kollektiva-avatars-row::-webkit-scrollbar {
+        display: none;
+      }
+
+      .kollektiva-avatar-btn {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        outline: none;
+        flex-shrink: 0;
+      }
+
+      /* Circular avatars: h-9 w-9 sm:h-11 sm:w-11 */
+      .kollektiva-avatar-img {
+        width: 2.25rem; /* h-9 / w-9 (36px) */
+        height: 2.25rem;
+        border-radius: 9999px;
+        object-fit: cover;
+        border: 2px solid transparent;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, opacity 0.25s ease;
+        opacity: 0.65;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      @media (min-width: 640px) {
+        .kollektiva-avatar-img {
+          width: 2.75rem; /* sm:h-11 / sm:w-11 (44px) */
+          height: 2.75rem;
+        }
+      }
+
+      .kollektiva-avatar-btn:hover .kollektiva-avatar-img {
+        opacity: 0.95;
+        transform: scale(1.08);
+      }
+
+      .kollektiva-avatar-btn.active .kollektiva-avatar-img {
+        opacity: 1;
+        border-color: #ffffff;
+        transform: scale(1.14);
+        box-shadow: 0 0 14px rgba(255, 255, 255, 0.45);
+      }
+
+      /* Active dot indicator with 300ms transition */
+      .kollektiva-active-dot {
+        width: 3.5px;
+        height: 3.5px;
+        border-radius: 9999px;
+        background-color: #ffffff;
+        opacity: 0;
+        transform: scale(0);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .kollektiva-avatar-btn.active .kollektiva-active-dot {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* Footer Bar with border-t border-white/20 and text-xs sm:text-sm text-white/60 */
+      .kollektiva-footer-bar {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 0.75rem; /* text-xs */
+        color: rgba(255, 255, 255, 0.60); /* text-white/60 */
+      }
+
+      @media (min-width: 640px) {
+        .kollektiva-footer-bar {
+          font-size: 0.875rem; /* sm:text-sm */
+        }
+      }
+
+      .kollektiva-footer-info {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        color: rgba(255, 255, 255, 0.60);
+      }
+
+      .kollektiva-member-name {
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: -0.01em;
+      }
+
+      .kollektiva-member-role {
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 400;
+      }
+
+      .kollektiva-footer-static {
+        color: rgba(255, 255, 255, 0.50);
+      }
+
+      .kollektiva-whatsapp-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.75rem;
+        transition: color 0.2s ease, opacity 0.2s ease;
+      }
+
+      @media (min-width: 640px) {
+        .kollektiva-whatsapp-link {
+          font-size: 0.875rem;
+        }
+      }
+
+      .kollektiva-whatsapp-link:hover {
+        color: #ff8c42;
+      }
+
+      /* Section 3: Philosophy & Practice (#about) */
+      .about-section {
+        padding: clamp(80px, 12vh, 140px) 0 100px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .about-header {
+        max-width: 780px;
+        margin-bottom: clamp(40px, 6vh, 60px);
+      }
+
+      .about-headline {
+        font-size: clamp(32px, 4.5vw, 54px);
+        line-height: 1.08;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #ffffff;
+        margin-top: 12px;
+      }
+
+      .about-lead {
+        margin-top: 18px;
+        font-size: clamp(16px, 1.35vw, 19px);
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .process-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: clamp(16px, 2.5vw, 28px);
+        margin-bottom: 56px;
+      }
+
+      .process-card {
+        padding: 32px 28px;
+        border-radius: 22px;
+        background: rgba(18, 19, 21, 0.65);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 240px;
+        transition: transform 0.3s var(--ease), border-color 0.3s ease;
+      }
+
+      .process-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .process-step {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--accent-orange);
+        letter-spacing: 0.04em;
+      }
+
+      .process-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.015em;
+        margin: 14px 0 8px;
+      }
+
+      .process-desc {
+        font-size: 14px;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      /* Capabilities & Metrics Bar */
+      .capabilities-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 30px clamp(20px, 4vw, 40px);
+        border-radius: 20px;
+        background: rgba(18, 19, 21, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .metric-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .metric-val {
+        font-size: clamp(20px, 2.2vw, 32px);
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        color: #ffffff;
+        line-height: 1.15;
+      }
+
+      .metric-lbl {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.01em;
+      }
+
+      /* Section 4: Contact & Collaboration (#contact) */
+      .contact-section {
+        padding: clamp(80px, 12vh, 140px) 0 80px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .contact-card-box {
+        border-radius: 32px;
+        background: rgba(18, 19, 21, 0.72);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: clamp(36px, 6vw, 72px) clamp(24px, 5vw, 64px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-inner-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: clamp(32px, 5vw, 64px);
+        align-items: center;
+      }
+
+      .contact-big-title {
+        font-size: clamp(36px, 5.2vw, 68px);
+        line-height: 0.98;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        color: #ffffff;
+        margin-top: 12px;
+      }
+
+      .contact-subtext {
+        margin-top: 20px;
+        font-size: clamp(15px, 1.3vw, 18px);
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.75);
+        max-width: 48ch;
+      }
+
+      .contact-right-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .contact-meta-card {
+        padding: 22px 24px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .contact-meta-label {
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 6px;
+      }
+
+      .contact-email-link {
+        font-size: clamp(17px, 1.8vw, 24px);
+        font-weight: 700;
+        color: #ffffff;
+        text-decoration: none;
+        letter-spacing: -0.02em;
+        transition: color 0.2s ease;
+      }
+
+      .contact-email-link:hover {
+        color: var(--accent-orange);
+      }
+
+      .social-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .social-link {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .social-link:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+      }
+
+      /* Responsive rules */
+      @media (max-width: 960px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .hero-right-quote {
+          max-width: 100%;
+        }
+        .projects-cards-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+        .services-strip {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+        }
+        .designs-header {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .designs-headline {
+          max-width: 100%;
+        }
+        .process-grid {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+        .capabilities-bar {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+        }
+        .contact-inner-grid {
+          grid-template-columns: 1fr;
+          gap: 36px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .nav-menu {
+          display: none;
+        }
+        .hero-title {
+          font-size: clamp(38px, 12vw, 56px);
+        }
+        .projects-cards-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .brands-bar-wrapper {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .brands-list {
+          gap: 20px;
+        }
+        .capabilities-bar {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .site-footer {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- React Root Container (Renders #about and #hola isolated experiences) -->
+    <div id="root"></div>
+
+    <!-- 1. Preloader -->
+    <div class="boot" id="boot">
+      <div class="bar" id="bootBarWrap"><i id="bootBar"></i></div>
+      <p id="bootPct">LOADING 0%</p>
+    </div>
+
+    <!-- 2. Fixed Stage Background Video Scrub Layer -->
+    <div class="stage" id="stage">
+      <video id="clip" muted playsinline preload="auto" disablepictureinpicture></video>
+      <div class="veil" id="veil"></div>
+      <div class="grain" id="grain"></div>
+    </div>
+
+    <!-- 3. Scroll Progress Hairline -->
+    <i class="meter" id="meter"></i>
+
+    <!-- 4. Fixed Top Header Navigation -->
+    <header class="nav-header" id="navHeader">
+      <a href="#home" class="brand-logo" id="brandLogo">Cookie Planet</a>
+      <nav class="nav-menu" id="navMenu">
+        <a href="#home" class="nav-link active" id="navLinkInicio">Inicio</a>
+        <a href="#about" class="nav-link" id="navLinkAbout">About</a>
+        <a href="#projects" class="nav-link" id="navLinkProjects">Top Cookies</a>
+        <a href="#hola" class="nav-link" id="navLinkHola">Merch</a>
+        <a href="/#store" class="nav-link" id="navLinkStore">Store</a>
+      </nav>
+    </header>
+
+    <!-- 5. Scrollable Content Wrapper Directly Over Video Animation -->
+    <div class="site-wrapper" id="siteWrapper">
+      <div class="content-container">
+
+        <!-- Dedicated About Page View Wrapper (Rendered dynamically via React in #root) -->
+        <div id="viewAbout" class="view-hidden"></div>
+
+        <!-- Dedicated Hola Page View Wrapper (Rendered dynamically via React in #root) -->
+        <div id="viewHola" class="view-hidden w-full h-full p-0 m-0"></div>
+
+        <!-- Dedicated Store Page View Wrapper (Rendered dynamically via React in #root) -->
+        <div id="viewStore" class="view-hidden w-full h-full p-0 m-0"></div>
+
+        <!-- Dedicated Projects Page View (Kollektiva adapted to Cookie Planet, Visible when on #projects) -->
+        <div id="viewProjects" class="view-hidden fixed inset-0 z-50 h-screen w-screen overflow-hidden bg-black/90">
+          <section class="h-screen w-full overflow-hidden relative font-geist p-6 md:p-10 flex flex-col justify-between h-full kollektiva-container" id="kollektivaSection">
+            <!-- 8 Background Images Layer with smooth transition -->
+            <div class="kollektiva-bg-layer" id="kollektivaBgLayer">
+              <div
+                class="kollektiva-bg-slide active"
+                id="bgSlide0"
+              >
+                <img
+                  src="/image.png"
+                  alt="Chocolate Chip"
+                  class="w-full h-full object-cover object-center"
+                  loading="eager"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div
+                class="kollektiva-bg-slide"
+                id="bgSlide1"
+              >
+                <img
+                  src="/cookies-and-cream.png"
+                  onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 12_57_44 a.m.png';}"
+                  alt="Cookies & Cream"
+                  class="w-full h-full object-cover object-center"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <!-- Slide 2: Red Velvet -->
+              <div
+                class="kollektiva-bg-slide"
+                id="bgSlide2"
+              >
+                <img
+                  src="/red-velvet.png"
+                  onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 01_17_07 a.m.png';}"
+                  alt="Red Velvet"
+                  class="w-full h-full object-cover object-center"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <!-- Slide 3: Oatmeal Raisin -->
+              <div
+                class="kollektiva-bg-slide"
+                id="bgSlide3"
+              >
+                <img
+                  src="/oatmeal-raisin.png"
+                  onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 01_31_53 a.m.png';}"
+                  alt="Oatmeal Raisin"
+                  class="w-full h-full object-cover object-center"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <!-- Slide 4: Butter Cookies -->
+              <div
+                class="kollektiva-bg-slide"
+                id="bgSlide4"
+              >
+                <img
+                  src="/butter-cookies.png"
+                  onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 01_47_54 a.m.png';}"
+                  alt="Butter Cookies"
+                  class="w-full h-full object-cover object-center"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <!-- Slide 5: Swirl Cookies -->
+              <div
+                class="kollektiva-bg-slide"
+                id="bgSlide5"
+              >
+                <img
+                  src="/swirl-cookies.png"
+                  onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 02_16_32 a.m.png';}"
+                  alt="Swirl Cookies"
+                  class="w-full h-full object-cover object-center"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div
+                class="kollektiva-bg-slide"
+                id="bgSlide6"
+                style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1920&auto=format&fit=crop');"
+              ></div>
+              <div
+                class="kollektiva-bg-slide"
+                id="bgSlide7"
+                style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1920&auto=format&fit=crop');"
+              ></div>
+            </div>
+
+            <!-- Gradient Layer: from-black/20 via-black/5 to-black/25 -->
+            <div class="kollektiva-overlay"></div>
+
+            <!-- Top Section -->
+            <div class="kollektiva-content-top relative z-10 w-full"></div>
+
+            <!-- Bottom Section: Avatars & Footer Bar -->
+            <div class="kollektiva-bottom-section relative z-10 w-full flex flex-col gap-3">
+              <!-- 8 Avatar Buttons -->
+              <div class="kollektiva-avatars-row flex items-center gap-3 overflow-x-auto py-1" id="kollektivaAvatarsRow">
+                <!-- Member 0: Chocolate Chip -->
+                <button type="button" class="kollektiva-avatar-btn active" data-index="0" aria-label="Chocolate Chip">
+                  <img
+                    src="/image.png"
+                    alt="Chocolate Chip"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+
+                <!-- Member 1: Cookies & Cream -->
+                <button type="button" class="kollektiva-avatar-btn" data-index="1" aria-label="Cookies & Cream">
+                  <img
+                    src="/cookies-and-cream.png"
+                    onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 12_57_44 a.m.png';}"
+                    alt="Cookies & Cream"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+
+                <!-- Member 2: Red Velvet -->
+                <button type="button" class="kollektiva-avatar-btn" data-index="2" aria-label="Red Velvet">
+                  <img
+                    src="/red-velvet.png"
+                    onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 01_17_07 a.m.png';}"
+                    alt="Red Velvet"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+
+                <!-- Member 3: Oatmeal Raisin -->
+                <button type="button" class="kollektiva-avatar-btn" data-index="3" aria-label="Oatmeal Raisin">
+                  <img
+                    src="/oatmeal-raisin.png"
+                    onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 01_31_53 a.m.png';}"
+                    alt="Oatmeal Raisin"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+
+                <!-- Member 4: Butter Cookies -->
+                <button type="button" class="kollektiva-avatar-btn" data-index="4" aria-label="Butter Cookies">
+                  <img
+                    src="/butter-cookies.png"
+                    onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 01_47_54 a.m.png';}"
+                    alt="Butter Cookies"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+
+                <!-- Member 5: Swirl Cookies -->
+                <button type="button" class="kollektiva-avatar-btn" data-index="5" aria-label="Swirl Cookies">
+                  <img
+                    src="/swirl-cookies.png"
+                    onerror="if(this.src.indexOf('ChatGPT')===-1){this.src='/ChatGPT Image 15 sept 2026, 02_16_32 a.m.png';}"
+                    alt="Swirl Cookies"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+
+                <!-- Member 6: Igor Zakharenko -->
+                <button type="button" class="kollektiva-avatar-btn" data-index="6" aria-label="Igor Zakharenko">
+                  <img
+                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=240&auto=format&fit=crop"
+                    alt="Igor Zakharenko"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+
+                <!-- Member 7: Ksenia Romanova -->
+                <button type="button" class="kollektiva-avatar-btn" data-index="7" aria-label="Ksenia Romanova">
+                  <img
+                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=240&auto=format&fit=crop"
+                    alt="Ksenia Romanova"
+                    class="kollektiva-avatar-img h-9 w-9 sm:h-11 sm:w-11 rounded-full object-cover"
+                    loading="lazy"
+                  />
+                  <span class="kollektiva-active-dot"></span>
+                </button>
+              </div>
+
+              <!-- Footer bar with border-t border-white/20 -->
+              <div class="kollektiva-footer-bar border-t border-white/20 pt-3 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm text-white/60">
+                <div class="kollektiva-footer-info flex items-center gap-3.5 flex-wrap">
+                  <!-- 1. Member Name (fadeIn animation) -->
+                  <span class="kollektiva-member-name animate-fadeIn font-semibold text-white" id="kollektivaName">Chocolate Chip</span>
+                  <!-- 2. Member Role -->
+                  <span class="kollektiva-member-role animate-fadeIn text-white/75" id="kollektivaRole">Signature Flavor &amp; Sweet Icon</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Main Home View Container (Contains Hero, Projects, Capabilities, Contact) -->
+        <div id="viewHome">
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+          <div class="hero-grid">
+            <div class="hero-left">
+              <h1 class="hero-title" id="heroMainTitle">
+                Cookie<br />Planet
+              </h1>
+            </div>
+
+            <div class="hero-right-quote">
+              <h2 class="quote-title">Dulzura y felicidad en cada bocado</h2>
+              <p class="quote-desc">Ingredientes seleccionados, horneado diario y un sabor extraordinario en cada mordisco.</p>
+            </div>
+          </div>
+
+          <!-- 4 Pillars (#01 to #04) -->
+          <div class="services-strip" id="servicesStrip">
+            <div class="service-item">
+              <span class="service-number">#01</span>
+              <span class="service-name">Horneado Diario</span>
+            </div>
+            <div class="service-item">
+              <span class="service-number">#02</span>
+              <span class="service-name">100% Artesanales</span>
+            </div>
+            <div class="service-item">
+              <span class="service-number">#03</span>
+              <span class="service-name">Chocolates Top</span>
+            </div>
+            <div class="service-item">
+              <span class="service-number">#04</span>
+              <span class="service-name">Envíos Express</span>
+            </div>
+          </div>
+
+          <!-- Trusted Brands Strip -->
+          <div class="brands-bar-wrapper" id="brandsBar">
+            <div class="brands-label">
+              Sabores Favoritos de la Casa
+            </div>
+            <div class="brands-list">
+              <div class="brand-logo-item">
+                <span class="brand-icon">&#9675;</span>
+                <span>Nutella Bomb</span>
+              </div>
+              <div class="brand-logo-item">
+                <span class="brand-icon">&#9018;</span>
+                <span>Red Velvet</span>
+              </div>
+              <div class="brand-logo-item">
+                <span class="brand-icon">&#9680;</span>
+                <span>Choco Chunk</span>
+              </div>
+              <div class="brand-logo-item">
+                <span class="brand-icon">&#9682;</span>
+                <span>Macadamia Gold</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Behind the Designs -->
+        <section class="designs-section" id="categoriesSection">
+          <div class="designs-header">
+            <div>
+              <p class="badge-category" id="behindBadge">Behind the Designs</p>
+              <h2 class="designs-headline" id="shapingHeadline">
+                Nuestras Categorías
+              </h2>
+            </div>
+            <div class="designs-right">
+              <p class="designs-statement">
+                Nuestras galletas tradicionales hechas a mano con ingredientes frescos y sabor intenso.
+              </p>
+            </div>
+          </div>
+
+          <!-- 4-Column Image Cards Grid -->
+          <div class="projects-cards-grid" id="projectsGrid">
+            <!-- Card 1: Puffer Jacket Minimalist Product Studio -->
+            <div class="project-card" id="projectCard1">
+              <img
+                src="https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=900&auto=format&fit=crop"
+                alt="Galletas Clásicas"
+                loading="lazy"
+              />
+              <div class="project-card-overlay"></div>
+              <div class="project-card-caption">Clásicas</div>
+            </div>
+
+            <!-- Card 2: Headphone / Audio Spatial Portrait -->
+            <div class="project-card" id="projectCard2">
+              <img
+                src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=900&auto=format&fit=crop"
+                alt="Galletas Rellenadas"
+                loading="lazy"
+              />
+              <div class="project-card-overlay"></div>
+              <div class="project-card-caption">Rellenadas</div>
+            </div>
+
+            <!-- Card 3: Cosmetic / Botanical Bottle on Natural Stone -->
+            <div class="project-card" id="projectCard3">
+              <img
+                src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=900&auto=format&fit=crop"
+                alt="Galletas de Temporada"
+                loading="lazy"
+              />
+              <div class="project-card-overlay"></div>
+              <div class="project-card-caption">Temporales</div>
+            </div>
+
+            <!-- Card 4: Editorial Print & Objects -->
+            <div class="project-card" id="projectCard4">
+              <img
+                src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=900&auto=format&fit=crop"
+                alt="Galletas Personalizadas"
+                loading="lazy"
+              />
+              <div class="project-card-overlay"></div>
+              <div class="project-card-caption">Personalizadas</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Philosophy & Practice -->
+        <section class="about-section" id="about">
+          <div class="about-header">
+            <p class="badge-category" id="aboutBadge">Nuestra Filosofía y Proceso</p>
+            <h2 class="about-headline" id="aboutHeadline">
+              Transformando ingredientes frescos en galletas inolvidables.
+            </h2>
+            <p class="about-lead">
+              Cada receta es una combinación perfecta entre ingredientes seleccionados, sabor artesanal y horneado diario para brindarte una experiencia única.
+            </p>
+          </div>
+
+          <!-- 3-Step Process Flow -->
+          <div class="process-grid" id="processGrid">
+            <div class="process-card" id="processCard1">
+              <span class="process-step">PASO 01</span>
+              <div>
+                <h3 class="process-title">Selección de Ingredientes</h3>
+                <p class="process-desc">
+                  Utilizamos mantequilla de primera calidad, chocolates seleccionados y esencias naturales sin preservantes.
+                </p>
+              </div>
+            </div>
+
+            <div class="process-card" id="processCard2">
+              <span class="process-step">PASO 02</span>
+              <div>
+                <h3 class="process-title">Horneado Artesanal</h3>
+                <p class="process-desc">
+                  Controlamos el tiempo y la temperatura exacta para lograr un centro suave y bordes crujientes.
+                </p>
+              </div>
+            </div>
+
+            <div class="process-card" id="processCard3">
+              <span class="process-step">PASO 03</span>
+              <div>
+                <h3 class="process-title">Entrega Recién Horneada</h3>
+                <p class="process-desc">
+                  Empacamos cada lote al instante para que recibas tus galletas listas para disfrutar con la máxima frescura.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Capabilities & Performance Metrics -->
+          <div class="capabilities-bar" id="capabilitiesBar">
+            <div class="metric-item">
+              <span class="metric-val">100% Artesanales</span>
+              <span class="metric-lbl">Sin conservantes</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-val">+6 Sabores</span>
+              <span class="metric-lbl">Exclusivos de la casa</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-val">Horneado Diario</span>
+              <span class="metric-lbl">Garantía de frescura</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-val">Pedidos 24/7</span>
+              <span class="metric-lbl">Atención al cliente</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Contact & Collaboration -->
+        <section class="contact-section" id="contact">
+          <div class="contact-card-box" id="contactCardBox">
+            <div class="contact-inner-grid">
+              <div class="contact-left">
+                <p class="badge-category" id="contactBadge">Contáctanos</p>
+                <h2 class="contact-big-title" id="contactTitle">
+                  ¿Tienes un evento o antojo especial? Hagámoslo realidad.
+                </h2>
+                <p class="contact-subtext">
+                  Aceptamos pedidos personalizados para cumpleaños, reuniones y eventos escolares. Escríbenos y hornearemos tu idea.
+                </p>
+              </div>
+
+              <div class="contact-right-panel">
+                <div class="contact-meta-card">
+                  <div class="contact-meta-label">PEDIDOS DIRECTOS / WHATSAPP</div>
+                  <a href="mailto:pedidos@cookieplanet.pe" class="contact-email-link">pedidos@cookieplanet.pe</a>
+                  <div style="margin-top: 6px; font-size: 15px; font-weight: 600; color: #ff8c42;">+51 987 654 321</div>
+                </div>
+
+                <div class="contact-meta-card">
+                  <div class="contact-meta-label">UBICACIÓN Y ENTREGA</div>
+                  <div style="font-size: 16px; font-weight: 600; color: #ffffff;">Lima, Perú &bull; Entregas a Domicilio y Puntos de Recojo</div>
+                </div>
+
+                <div class="social-row">
+                  <a href="https://wa.me/51987654321" target="_blank" rel="noopener noreferrer" class="social-link">WhatsApp</a>
+                  <a href="#instagram" class="social-link">Instagram</a>
+                  <a href="#tiktok" class="social-link">TikTok</a>
+                  <a href="#facebook" class="social-link">Facebook</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Note -->
+          <footer class="site-footer" id="siteFooter">
+            <span>Cookie Planet &copy; 2026</span>
+            <span>Horneado con amor para tu día a día.</span>
+          </footer>
+        </section>
+        </div> <!-- /viewHome -->
+
+      </div>
+    </div>
+
+    <!-- 6. Interactive Scroll & Video Scrubbing Engine (Seamless scrubbing maintained) -->
+    <script>
+      (function () {
+        "use strict";
+
+        var VIDEO_URL = "./video.mp4";
+
+        var clip = document.getElementById("clip");
+        var boot = document.getElementById("boot");
+        var bootBar = document.getElementById("bootBar");
+        var bootPct = document.getElementById("bootPct");
+        var meter = document.getElementById("meter");
+
+        function clamp(v, a, b) {
+          return Math.max(a, Math.min(b, v));
+        }
+
+        var progress = 0;
+        var seekTo = 0;
+        var seekAt = 0;
+        var duration = 0;
+        var ready = false;
+        var started = false;
+        var attached = false;
+
+        function readScroll() {
+          var max = document.documentElement.scrollHeight - window.innerHeight;
+          progress = max > 0 ? clamp(window.pageYOffset / max, 0, 1) : 0;
+          if (duration) seekTo = progress * duration;
+        }
+
+        function paint() {
+          if (meter) meter.style.transform = "scaleX(" + progress + ")";
+        }
+
+        // The easing of currentTime toward the scroll target creates the ultra-smooth video scrubbing
+        function frame() {
+          if (ready && duration) {
+            var gap = seekTo - seekAt;
+            if (Math.abs(gap) > 0.0008) {
+              seekAt += gap * 0.115; // smooth easing factor
+              if (clip.readyState >= 2 && !clip.seeking) {
+                try {
+                  clip.currentTime = seekAt;
+                } catch (e) {}
+              }
+            }
+          }
+          paint();
+          requestAnimationFrame(frame);
+        }
+
+        function setProgress(f) {
+          if (bootBar) bootBar.style.transform = "scaleX(" + f + ")";
+          if (bootPct) bootPct.textContent = "LOADING " + Math.round(f * 100) + "%";
+        }
+
+        function start() {
+          if (started) return;
+          started = true;
+          ready = true;
+          if (boot) boot.classList.add("done");
+          readScroll();
+          seekAt = seekTo;
+        }
+
+        function attach(src) {
+          if (attached) return;
+          attached = true;
+          clip.addEventListener("loadedmetadata", function () {
+            duration = clip.duration || 0;
+            clip.pause();
+            readScroll();
+            seekAt = seekTo;
+            try {
+              clip.currentTime = seekAt;
+            } catch (e) {}
+          });
+          clip.addEventListener("loadeddata", start);
+          clip.addEventListener("canplaythrough", start);
+          clip.addEventListener("error", start);
+
+          clip.src = src;
+          clip.load();
+          setTimeout(start, 12000);
+        }
+
+        // Fetch video as a buffered blob for zero-latency frame seeking
+        function preload() {
+          var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+          var signal = controller ? controller.signal : undefined;
+          var bail = setTimeout(function () {
+            if (!attached) {
+              if (controller) controller.abort();
+              setProgress(1);
+              attach(VIDEO_URL);
+            }
+          }, 15000);
+
+          fetch(VIDEO_URL, { signal: signal })
+            .then(function (res) {
+              if (!res.ok || !res.body) throw new Error("Fetch failed");
+              var total = parseInt(res.headers.get("content-length") || "0", 10);
+              var got = 0;
+              var reader = res.body.getReader();
+              var chunks = [];
+
+              function pump() {
+                return reader.read().then(function (result) {
+                  if (result.done) {
+                    return new Blob(chunks, { type: "video/mp4" });
+                  }
+                  chunks.push(result.value);
+                  got += result.value.byteLength;
+                  setProgress(total ? got / total : Math.min(got / 11e6, 0.95));
+                  return pump();
+                });
+              }
+              return pump();
+            })
+            .then(function (blob) {
+              clearTimeout(bail);
+              setProgress(1);
+              attach(URL.createObjectURL(blob));
+            })
+            .catch(function () {
+              clearTimeout(bail);
+              setProgress(1);
+              attach(VIDEO_URL);
+            });
+        }
+
+        // iOS mobile unlock
+        function unlock() {
+          var p = clip.play();
+          if (p && p.then) {
+            p.then(function () {
+              clip.pause();
+            }).catch(function () {});
+          } else {
+            clip.pause();
+          }
+        }
+        ["touchstart", "pointerdown", "wheel", "keydown"].forEach(function (ev) {
+          window.addEventListener(ev, unlock, { once: true, passive: true });
+        });
+
+        window.addEventListener("scroll", readScroll, { passive: true });
+        window.addEventListener("resize", readScroll);
+
+        // View Switching Engine (SPA State for Home vs About vs Projects vs Hola vs Store)
+        var viewHome = document.getElementById("viewHome");
+        var viewAbout = document.getElementById("viewAbout");
+        var viewProjects = document.getElementById("viewProjects");
+        var viewHola = document.getElementById("viewHola");
+        var viewStore = document.getElementById("viewStore");
+        var navLinkInicio = document.getElementById("navLinkInicio");
+        var navLinkAbout = document.getElementById("navLinkAbout");
+        var navLinkProjects = document.getElementById("navLinkProjects");
+        var navLinkHola = document.getElementById("navLinkHola");
+        var navLinkStore = document.getElementById("navLinkStore");
+        var btnBackToHome = document.getElementById("btnBackToHome");
+        var btnHolaBackToHome = document.getElementById("btnHolaBackToHome");
+        var btnProjectsBackToHome = document.getElementById("btnProjectsBackToHome");
+
+        // Kollektiva Data (8 team members)
+        var MEMBERS = [
+          {
+            name: "Chocolate Chip",
+            role: "Signature Flavor & Sweet Icon",
+            desc: "The iconic recipe featuring golden buttery dough packed with rich chocolate chips and delicate vanilla notes."
+          },
+          {
+            name: "Cookies & Cream",
+            role: "Velvet Cream & Dark Cocoa Icon",
+            desc: "A stunning creation blending deep dark chocolate biscuits with swirls of decadent vanilla cream and crushed cookie wafers."
+          },
+          {
+            name: "Red Velvet",
+            role: "Crimson Cocoa & White Chocolate Icon",
+            desc: "A lavish crimson cocoa biscuit crowned with creamy white chocolate morsels and rich buttermilk vanilla notes."
+          },
+          {
+            name: "Oatmeal Raisin",
+            role: "Toasted Oats & Sweet Raisin Icon",
+            desc: "A timeless masterpiece featuring hearty rolled oats, warm cinnamon spice, and plump sweet raisins baked to golden perfection."
+          },
+          {
+            name: "Butter Cookies",
+            role: "Golden Danish Butter & Vanilla Swirl Icon",
+            desc: "A royal European classic baked with churned sweet cream butter, piped in delicate golden rosettes with a rich melt-away crumb."
+          },
+          {
+            name: "Swirl Cookies",
+            role: "Vanilla & Dutch Cocoa Marble Swirl Icon",
+            desc: "A captivating swirl of golden vanilla butter and dark Dutch cocoa dough intertwining into a rich, buttery harmony."
+          },
+          {
+            name: "Igor Zakharenko",
+            role: "Raw Sourcing & Heritage Ingredients",
+            desc: "Agricultural curator partnering directly with organic dairy farms and sustainable vanilla plantations worldwide."
+          },
+          {
+            name: "Ksenia Romanova",
+            role: "Customer Happiness & Custom Catering",
+            desc: "Personal conciergerie orchestrating bespoke corporate gifting, weddings, and milestone celebration deliveries."
+          }
+        ];
+
+        var activeMemberIdx = 0;
+        var kollektivaBio = document.getElementById("kollektivaBio");
+        var kollektivaName = document.getElementById("kollektivaName");
+        var kollektivaRole = document.getElementById("kollektivaRole");
+        var avatarButtons = document.querySelectorAll(".kollektiva-avatar-btn");
+        var bgSlides = document.querySelectorAll(".kollektiva-bg-slide");
+
+        function triggerFadeAnimation(el) {
+          if (!el) return;
+          el.classList.remove("animate-fadeIn");
+          void el.offsetWidth; // Force reflow to replay CSS animation
+          el.classList.add("animate-fadeIn");
+        }
+
+        function setMember(index) {
+          if (index < 0 || index >= MEMBERS.length) return;
+          activeMemberIdx = index;
+          var member = MEMBERS[index];
+
+          // Update texts with fadeIn animation
+          if (kollektivaBio) {
+            kollektivaBio.textContent = member.desc;
+            triggerFadeAnimation(kollektivaBio);
+          }
+          if (kollektivaName) {
+            kollektivaName.textContent = member.name;
+            triggerFadeAnimation(kollektivaName);
+          }
+          if (kollektivaRole) {
+            kollektivaRole.textContent = member.role;
+            triggerFadeAnimation(kollektivaRole);
+          }
+
+          // Update background slides opacity transition
+          bgSlides.forEach(function (slide, idx) {
+            if (idx === index) {
+              slide.classList.add("active");
+            } else {
+              slide.classList.remove("active");
+            }
+          });
+
+          // Update avatar buttons active state & indicator dot
+          avatarButtons.forEach(function (btn, idx) {
+            if (idx === index) {
+              btn.classList.add("active");
+            } else {
+              btn.classList.remove("active");
+            }
+          });
+        }
+
+        // Attach click listener to each avatar
+        avatarButtons.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var idx = parseInt(btn.getAttribute("data-index"), 10);
+            if (!isNaN(idx)) {
+              setMember(idx);
+            }
+          });
+        });
+
+        function setView(viewName, updateHistory) {
+          if (updateHistory !== false) {
+            if (viewName === "about") {
+              if (window.location.hash !== "#about") {
+                history.pushState(null, "", "#about");
+              }
+            } else if (viewName === "projects") {
+              if (window.location.hash !== "#projects") {
+                history.pushState(null, "", "#projects");
+              }
+            } else if (viewName === "hola") {
+              if (window.location.hash !== "#hola") {
+                history.pushState(null, "", "#hola");
+              }
+            } else if (viewName === "store") {
+              if (window.location.hash !== "#store" && window.location.hash !== "/#store") {
+                history.pushState(null, "", "/#store");
+              }
+            } else {
+              if (window.location.hash && window.location.hash !== "#home" && window.location.hash !== "#inicio") {
+                history.pushState(null, "", "#home");
+              }
+            }
+          }
+
+          var stage = document.getElementById("stage");
+          var meter = document.getElementById("meter");
+          var navHeader = document.getElementById("navHeader");
+          var siteWrapper = document.getElementById("siteWrapper");
+
+          if (viewName === "about") {
+            if (siteWrapper) {
+              siteWrapper.style.display = "none";
+              siteWrapper.classList.add("view-hidden");
+            }
+            if (stage) stage.style.display = "none";
+            if (meter) meter.style.display = "none";
+            if (navHeader) navHeader.style.display = "none";
+            if (viewHome) viewHome.classList.add("view-hidden");
+            if (viewProjects) viewProjects.classList.add("view-hidden");
+            if (viewHola) viewHola.classList.add("view-hidden");
+            if (viewStore) viewStore.classList.add("view-hidden");
+            if (viewAbout) viewAbout.classList.remove("view-hidden");
+
+            if (navLinkAbout) navLinkAbout.classList.add("active");
+            if (navLinkInicio) navLinkInicio.classList.remove("active");
+            if (navLinkProjects) navLinkProjects.classList.remove("active");
+            if (navLinkHola) navLinkHola.classList.remove("active");
+            if (navLinkStore) navLinkStore.classList.remove("active");
+
+            window.scrollTo({ top: 0, behavior: "instant" });
+            window.dispatchEvent(new CustomEvent("prmpt:viewchange", { detail: { viewName: "about" } }));
+          } else if (viewName === "projects") {
+            if (siteWrapper) {
+              siteWrapper.style.display = "";
+              siteWrapper.classList.remove("view-hidden");
+            }
+            if (stage) stage.style.display = "";
+            if (meter) meter.style.display = "";
+            if (navHeader) navHeader.style.display = "";
+            if (viewHome) viewHome.classList.add("view-hidden");
+            if (viewAbout) viewAbout.classList.add("view-hidden");
+            if (viewHola) viewHola.classList.add("view-hidden");
+            if (viewStore) viewStore.classList.add("view-hidden");
+            if (viewProjects) viewProjects.classList.remove("view-hidden");
+
+            if (navLinkProjects) navLinkProjects.classList.add("active");
+            if (navLinkInicio) navLinkInicio.classList.remove("active");
+            if (navLinkAbout) navLinkAbout.classList.remove("active");
+            if (navLinkHola) navLinkHola.classList.remove("active");
+            if (navLinkStore) navLinkStore.classList.remove("active");
+
+            // Ensure first member active state is rendered properly
+            setMember(activeMemberIdx);
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else if (viewName === "hola") {
+            if (siteWrapper) {
+              siteWrapper.style.display = "none";
+              siteWrapper.classList.add("view-hidden");
+            }
+            if (stage) stage.style.display = "none";
+            if (meter) meter.style.display = "none";
+            if (navHeader) navHeader.style.display = "none";
+            if (viewHome) viewHome.classList.add("view-hidden");
+            if (viewAbout) viewAbout.classList.add("view-hidden");
+            if (viewProjects) viewProjects.classList.add("view-hidden");
+            if (viewStore) viewStore.classList.add("view-hidden");
+            if (viewHola) viewHola.classList.remove("view-hidden");
+
+            if (navLinkHola) navLinkHola.classList.add("active");
+            if (navLinkInicio) navLinkInicio.classList.remove("active");
+            if (navLinkAbout) navLinkAbout.classList.remove("active");
+            if (navLinkProjects) navLinkProjects.classList.remove("active");
+            if (navLinkStore) navLinkStore.classList.remove("active");
+
+            window.scrollTo({ top: 0, behavior: "instant" });
+            window.dispatchEvent(new CustomEvent("prmpt:viewchange", { detail: { viewName: "hola" } }));
+          } else if (viewName === "store") {
+            if (siteWrapper) {
+              siteWrapper.style.display = "none";
+              siteWrapper.classList.add("view-hidden");
+            }
+            if (stage) stage.style.display = "none";
+            if (meter) meter.style.display = "none";
+            if (navHeader) navHeader.style.display = "none";
+            if (viewHome) viewHome.classList.add("view-hidden");
+            if (viewAbout) viewAbout.classList.add("view-hidden");
+            if (viewProjects) viewProjects.classList.add("view-hidden");
+            if (viewHola) viewHola.classList.add("view-hidden");
+            if (viewStore) viewStore.classList.remove("view-hidden");
+
+            if (navLinkStore) navLinkStore.classList.add("active");
+            if (navLinkInicio) navLinkInicio.classList.remove("active");
+            if (navLinkAbout) navLinkAbout.classList.remove("active");
+            if (navLinkProjects) navLinkProjects.classList.remove("active");
+            if (navLinkHola) navLinkHola.classList.remove("active");
+
+            window.scrollTo({ top: 0, behavior: "instant" });
+            window.dispatchEvent(new CustomEvent("prmpt:viewchange", { detail: { viewName: "store" } }));
+          } else {
+            if (siteWrapper) {
+              siteWrapper.style.display = "";
+              siteWrapper.classList.remove("view-hidden");
+            }
+            if (stage) stage.style.display = "";
+            if (meter) meter.style.display = "";
+            if (navHeader) navHeader.style.display = "";
+            if (viewAbout) viewAbout.classList.add("view-hidden");
+            if (viewProjects) viewProjects.classList.add("view-hidden");
+            if (viewHola) viewHola.classList.add("view-hidden");
+            if (viewStore) viewStore.classList.add("view-hidden");
+            if (viewHome) viewHome.classList.remove("view-hidden");
+
+            if (navLinkInicio) navLinkInicio.classList.add("active");
+            if (navLinkAbout) navLinkAbout.classList.remove("active");
+            if (navLinkProjects) navLinkProjects.classList.remove("active");
+            if (navLinkHola) navLinkHola.classList.remove("active");
+            if (navLinkStore) navLinkStore.classList.remove("active");
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            window.dispatchEvent(new CustomEvent("prmpt:viewchange", { detail: { viewName: "home" } }));
+          }
+
+          setTimeout(readScroll, 80);
+        }
+
+        if (navLinkStore) {
+          navLinkStore.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("store", true);
+          });
+        }
+
+        if (navLinkHola) {
+          navLinkHola.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("hola", true);
+          });
+        }
+
+        if (navLinkProjects) {
+          navLinkProjects.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("projects", true);
+          });
+        }
+
+        if (navLinkAbout) {
+          navLinkAbout.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("about", true);
+          });
+        }
+
+        if (navLinkInicio) {
+          navLinkInicio.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("home", true);
+          });
+        }
+
+        var brandLogo = document.getElementById("brandLogo");
+        if (brandLogo) {
+          brandLogo.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("home", true);
+          });
+        }
+
+        if (btnBackToHome) {
+          btnBackToHome.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("home", true);
+          });
+        }
+
+        var btnAboutClose = document.getElementById("btnAboutClose");
+        if (btnAboutClose) {
+          btnAboutClose.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("home", true);
+          });
+        }
+
+        if (btnProjectsBackToHome) {
+          btnProjectsBackToHome.addEventListener("click", function (e) {
+            e.preventDefault();
+            setView("home", true);
+          });
+        }
+
+        function handleHashRouting() {
+          var h = window.location.hash;
+          if (h === "#about") {
+            setView("about", false);
+          } else if (h === "#projects") {
+            setView("projects", false);
+          } else if (h === "#hola") {
+            setView("hola", false);
+          } else if (h === "#store" || h === "/#store") {
+            setView("store", false);
+          } else {
+            setView("home", false);
+          }
+        }
+
+        // Handle browser Back / Forward buttons and hash changes
+        window.addEventListener("popstate", handleHashRouting);
+        window.addEventListener("hashchange", handleHashRouting);
+
+        handleHashRouting();
+
+        readScroll();
+        paint();
+        preload();
+        requestAnimationFrame(frame);
+      })();
+    </script>
+    <!-- React Entry Point -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+

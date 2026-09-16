@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Remix Remix Remix Cast \u0026 Render",
+  "description": "Cookie Planet — Experiencia interactiva y tienda oficial de galletas artesanales con catálogo, filtros avanzados y carrito de compras.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
