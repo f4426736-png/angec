@@ -428,7 +428,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="w-full px-6 sm:px-10 py-8">
+      <div id="storeProductsGrid" className="max-w-[1400px] mx-auto px-6 sm:px-10 py-8">
         {/* Mobile filter button & count bar */}
         <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE0D5]">
           <button
@@ -714,7 +714,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 min-[1300px]:grid-cols-5 2xl:grid-cols-5 gap-3.5 sm:gap-4 w-full">
                 {displayedProducts.map((cookie) => {
                   const isFav = favorites.has(cookie.id);
                   const isBestSeller = cookie.badge === 'Más vendido';
