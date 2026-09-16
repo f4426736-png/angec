@@ -291,7 +291,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           TOP BAR NAVIGATION (Matches exact reference header)
          ------------------------------------------------------------- */}
       <header className="sticky top-0 z-50 w-full bg-[#F6F4EE] backdrop-blur-md border-b border-[#EAE4DC] transition-all">
-        <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="w-full max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo (Izquierda) */}
           <div className="flex items-center">
             <button

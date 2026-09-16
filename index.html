@@ -129,13 +129,25 @@
         top: 0;
         left: 0;
         right: 0;
+        width: 100%;
         z-index: 80;
+        display: block;
+        padding: 0;
+        background: transparent;
+        transition: background 0.3s ease;
+      }
+
+      .nav-header-inner {
+        width: 100%;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 24px;
+        padding-right: 24px;
+        height: 64px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 20px clamp(24px, 5vw, 64px);
-        background: transparent;
-        transition: background 0.3s ease;
       }
 
       .brand-logo {
@@ -1320,8 +1332,8 @@
     <i class="meter" id="meter"></i>
 
     <!-- 4. Fixed Top Header Navigation -->
-    <header class="nav-header" id="navHeader" style="padding: 0;">
-      <div class="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between w-full">
+    <header class="nav-header" id="navHeader">
+      <div class="nav-header-inner max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between w-full">
         <a href="#home" class="brand-logo" id="brandLogo">Cookie Planet</a>
         <nav class="nav-menu" id="navMenu">
           <a href="#home" class="nav-link active" id="navLinkInicio">Inicio</a>
