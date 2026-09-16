@@ -428,7 +428,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <div id="storeProductsGrid" className="w-full px-6 sm:px-10 py-8">
         {/* Mobile filter button & count bar */}
         <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE0D5]">
           <button
@@ -443,7 +443,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           </span>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
+        <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL
              ========================================================= */}
@@ -631,9 +631,9 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           </aside>
 
           {/* =========================================================
-              RIGHT PRODUCTS COLUMN
+              RIGHT PRODUCTS COLUMN (Expands to fill all available space)
              ========================================================= */}
-          <main className="flex-1 w-full">
+          <main className="flex-1 min-w-0 w-full">
             {/* Top Toolbar (Search Bar + Results count + sorting dropdowns) */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-3 border-b border-[#EAE0D5]">
               {/* Search input in products grid */}
@@ -692,7 +692,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               </div>
             </div>
 
-            {/* Product Cards Grid (Matching 5 columns on wide desktop screens) */}
+            {/* Product Cards Grid (Spans horizontally across all remaining width) */}
             {displayedProducts.length === 0 ? (
               <div className="bg-white rounded-2xl border border-[#EAE0D5] p-12 text-center my-6">
                 <div className="text-5xl mb-3">🍪</div>
@@ -714,7 +714,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5 w-full">
                 {displayedProducts.map((cookie) => {
                   const isFav = favorites.has(cookie.id);
                   const isBestSeller = cookie.badge === 'Más vendido';
