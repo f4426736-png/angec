@@ -263,47 +263,74 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       )}
 
       {/* -------------------------------------------------------------
-          TOP BAR NAVIGATION (Store Navbar)
+          TOP BAR NAVIGATION (Global Dark Floating Navbar matching #inicio)
          ------------------------------------------------------------- */}
-      <header className="sticky top-0 z-40 bg-[#FAF6F0]/95 backdrop-blur-md border-b border-[#EAE0D5] px-4 sm:px-8 py-3.5 transition-all shadow-xs">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          {/* Brand and back to home */}
-          <div className="flex items-center gap-4">
+      <header
+        className="sticky top-0 z-40 w-full transition-all duration-300 bg-[#0f1011]/95 backdrop-blur-md border-b border-white/10 shadow-lg"
+      >
+        <div className="w-full max-w-[1400px] mx-auto flex items-center justify-between px-4 sm:px-8 lg:px-12 py-3.5 sm:py-4">
+          {/* Brand Logo: Cookie Planet */}
+          <button
+            onClick={onBackToHome}
+            className="flex items-baseline gap-1 group text-left cursor-pointer select-none bg-transparent border-none p-0 focus:outline-none"
+            title="Cookie Planet® - Volver al Inicio"
+          >
+            <span className="text-white text-xl sm:text-2xl font-bold tracking-tight group-hover:text-[#ff5b26] transition-colors">
+              Cookie Planet
+            </span>
+            <span className="text-[#ff5b26] text-xs sm:text-sm font-black">®</span>
+          </button>
+
+          {/* Navigation Links + Cart Action */}
+          <nav className="flex items-center gap-3 sm:gap-6 lg:gap-8">
             <button
               onClick={onBackToHome}
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#5A3828] hover:text-[#BA2A5D] px-3 py-1.5 rounded-full hover:bg-[#F0E4D5] transition-colors"
+              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Volver al Inicio</span>
+              Inicio
             </button>
-            <div className="h-4 w-[1px] bg-[#DCD0C4] hidden sm:block"></div>
-            <span className="font-bold text-lg sm:text-xl text-[#382015] tracking-tight font-serif">
-              Cookie Planet <span className="text-[#BA2A5D] text-xs font-sans uppercase font-extrabold tracking-widest ml-1">Store</span>
-            </span>
-          </div>
+            <a
+              href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.hash = '#about';
+              }}
+              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer"
+            >
+              About
+            </a>
+            <a
+              href="#projects"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.hash = '#projects';
+              }}
+              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer hidden md:inline"
+            >
+              Top Cookies
+            </a>
+            <a
+              href="#hola"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.hash = '#hola';
+              }}
+              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer"
+            >
+              Merch
+            </a>
+            {/* Store (Active with Accent Line Indicator) */}
+            <div className="relative inline-flex items-center">
+              <span className="text-white font-bold text-xs sm:text-sm cursor-default">
+                Store
+              </span>
+              <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#ff5b26] rounded-full" />
+            </div>
 
-          {/* Center search bar */}
-          <div className="hidden md:flex items-center relative flex-1 max-w-md mx-6">
-            <Search className="w-4 h-4 text-[#8C7667] absolute left-3.5 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Buscar galletas por nombre, sabor o ingrediente..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-[#DFD3C6] rounded-full pl-9 pr-4 py-1.5 text-xs sm:text-sm text-[#382015] placeholder-[#9B8779] focus:outline-none focus:border-[#BA2A5D] focus:ring-1 focus:ring-[#BA2A5D] transition-all"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
+            {/* Divider */}
+            <div className="h-4 w-[1px] bg-white/20 hidden sm:block"></div>
 
-          {/* Right Actions: Favorites & Cart */}
-          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Favorites Button */}
             <button
               onClick={() => {
                 if (favorites.size === 0) {
@@ -312,131 +339,56 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                   showToast(`Tienes ${favorites.size} galletas favoritas`);
                 }
               }}
-              className="relative p-2 rounded-full hover:bg-[#F0E4D5] text-[#5A3828] transition-colors"
+              className="relative p-2 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors"
               title="Mis Favoritos"
               aria-label="Mis Favoritos"
             >
-              <Heart className={`w-5 h-5 ${favorites.size > 0 ? 'fill-[#BA2A5D] text-[#BA2A5D]' : ''}`} />
+              <Heart className={`w-4 h-4 sm:w-4.5 sm:h-4.5 ${favorites.size > 0 ? 'fill-[#ff5b26] text-[#ff5b26]' : ''}`} />
               {favorites.size > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#BA2A5D] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-[#ff5b26] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {favorites.size}
                 </span>
               )}
             </button>
 
+            {/* Cart Button with badge integrated in the Navbar */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="inline-flex items-center gap-2 bg-[#382015] hover:bg-[#4E2E1F] text-white px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-transform active:scale-95 shadow-sm"
-              aria-label="Abrir Carrito"
+              className="inline-flex items-center gap-2 bg-[#ff5b26] hover:bg-[#e04e1e] active:scale-95 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-orange-500/20"
+              aria-label="Abrir Carrito de Compras"
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Carrito</span>
-              <span className="bg-[#BA2A5D] text-white text-[11px] font-bold px-1.5 py-0.2 rounded-full min-w-[18px] text-center">
+              <span className="bg-black/30 backdrop-blur-xs text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                 {totalCartCount}
               </span>
             </button>
-          </div>
+          </nav>
         </div>
       </header>
 
       {/* -------------------------------------------------------------
-          HERO BANNER (Replicating exact look of IMAGENNNN.png)
+          HERO BANNER (Using provided Cloudinary banner image directly)
          ------------------------------------------------------------- */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-r from-[#FBF5ED] via-[#F6EDE1] to-[#F8EFE4] border-b border-[#E8DDD0]">
-        {/* Subtle decorative background glow and doodles */}
-        <div className="absolute top-4 left-1/4 w-32 h-32 bg-amber-200/20 rounded-full blur-2xl pointer-events-none"></div>
-        <div className="absolute top-8 right-1/4 w-40 h-40 bg-rose-200/25 rounded-full blur-2xl pointer-events-none"></div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-          {/* Left Hero Graphic: Cookies & Glass of Milk */}
-          <div className="w-full md:w-1/3 flex items-center justify-center relative">
-            <div className="relative group">
-              {/* Milk Glass and Cookies stack arrangement */}
-              <div className="w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-3xl overflow-hidden shadow-xl border-4 border-white/80 bg-amber-50">
-                <img
-                  src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80"
-                  alt="Torre de Galletas con Leche"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80";
-                  }}
-                />
-              </div>
-              {/* Floating chocolate chunks decorative badge */}
-              <div className="absolute -bottom-3 -right-3 bg-white/95 backdrop-blur-sm border border-[#E8DDD0] rounded-2xl p-2.5 shadow-lg flex items-center gap-2">
-                <span className="text-xl">🥛</span>
-                <div>
-                  <div className="text-[10px] uppercase font-bold text-[#8C7667] tracking-wider">Recién Horneadas</div>
-                  <div className="text-xs font-extrabold text-[#382015]">100% Mantequilla</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Center Content: Exact Typography and CTA */}
-          <div className="w-full md:w-1/3 text-center flex flex-col items-center justify-center">
-            {/* Tagline doodle: –• GALETAS •– */}
-            <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-widest text-[#5A3828] uppercase mb-2">
-              <span className="text-sm">― •</span>
-              <span>GALLETAS</span>
-              <span className="text-sm">• ―</span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#331C12] leading-[1.1] tracking-tight font-serif">
-              Diferentes sabores,
-              <br />
-              <span className="inline-flex items-center gap-2">
-                la misma felicidad
-                <span className="text-[#331C12] text-2xl sm:text-3xl lg:text-4xl">♥</span>
-              </span>
-            </h1>
-
-            {/* Subtitle */}
-            <p className="mt-3 text-sm sm:text-base text-[#6B5244] font-medium max-w-sm">
-              Crujientes, suaves, deliciosas... ¡hay una para cada antojo!
-            </p>
-
-            {/* Magenta Pill Button: COMPRAR AHORA */}
-            <button
-              onClick={handleScrollToGrid}
-              className="mt-6 inline-flex items-center justify-center bg-[#BA2A5D] hover:bg-[#A32350] text-white text-sm sm:text-base font-bold uppercase tracking-wider px-8 sm:px-10 py-3.5 rounded-full shadow-md hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-            >
-              COMPRAR AHORA
-            </button>
-          </div>
-
-          {/* Right Hero Graphic: Variety text & dark cookies platter */}
-          <div className="w-full md:w-1/3 flex flex-col items-center md:items-end justify-center relative">
-            {/* Handwritten callout: "Variedad de sabores, texturas y formas" */}
-            <div className="relative mb-3 md:mb-1 mr-2 flex items-center gap-2 text-[#4A2D1F]">
-              <span className="font-handwriting text-lg sm:text-xl font-bold italic tracking-wide text-right leading-tight max-w-[190px]">
-                Variedad de sabores, texturas y formas
-              </span>
-              <span className="text-2xl transform rotate-12">✨</span>
-            </div>
-
-            {/* Plate of varied cookies */}
-            <div className="relative group">
-              <div className="w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-3xl overflow-hidden shadow-xl border-4 border-white/80 bg-amber-50">
-                <img
-                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80"
-                  alt="Variedad de Galletas"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80";
-                  }}
-                />
-              </div>
-              <div className="absolute -bottom-3 -left-3 bg-white/95 backdrop-blur-sm border border-[#E8DDD0] rounded-2xl p-2.5 shadow-lg flex items-center gap-2">
-                <span className="text-xl">🍪</span>
-                <div>
-                  <div className="text-[10px] uppercase font-bold text-[#8C7667] tracking-wider">Artesanales</div>
-                  <div className="text-xs font-extrabold text-[#382015]">+12 Sabores</div>
-                </div>
-              </div>
+      <section className="relative w-full overflow-hidden bg-[#F8EFE4] border-b border-[#E8DDD0]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-[#E8DDD0] bg-[#F7EFE4] group">
+            <img
+              src="https://res.cloudinary.com/yxbhso8s/image/upload/v1789532304/ChatGPT_Image_15_sept_2026_11_17_45_p.m.png"
+              alt="Diferentes sabores, la misma felicidad - Galletas artesanales"
+              className="w-full h-auto object-cover block"
+              referrerPolicy="no-referrer"
+              loading="eager"
+            />
+            {/* Clickable CTA overlay positioned right over or accessible for users */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <button
+                onClick={handleScrollToGrid}
+                aria-label="Comprar ahora galletas artesanales"
+                className="pointer-events-auto opacity-0 hover:opacity-10 focus:opacity-100 transition-opacity absolute bottom-[18%] sm:bottom-[20%] md:bottom-[22%] bg-[#BA2A5D] text-white text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3.5 rounded-full shadow-lg cursor-pointer"
+              >
+                COMPRAR AHORA
+              </button>
             </div>
           </div>
         </div>
@@ -638,16 +590,36 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               RIGHT PRODUCTS COLUMN
              ========================================================= */}
           <main className="flex-1 w-full">
-            {/* Top Toolbar (Showing results count + sorting dropdowns) */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-3 border-b border-[#EAE0D5]">
-              <div className="text-xs font-bold text-[#7A6456] tracking-wider uppercase">
-                MOSTRANDO 1-{displayedProducts.length} DE {filteredProducts.length} RESULTADOS
+            {/* Top Toolbar (Search Bar + Results count + sorting dropdowns) */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-3 border-b border-[#EAE0D5]">
+              {/* Search input in products grid */}
+              <div className="relative w-full md:w-72">
+                <Search className="w-4 h-4 text-[#8C7667] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Buscar galletas..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-white border border-[#DED2C5] rounded-full pl-9 pr-8 py-1.5 text-xs text-[#382015] placeholder-[#9B8779] focus:outline-none focus:border-[#BA2A5D] focus:ring-1 focus:ring-[#BA2A5D] transition-all"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
 
-              <div className="flex items-center gap-4 text-xs font-medium text-[#4A3225]">
+              <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 text-xs font-medium text-[#4A3225]">
+                <div className="text-xs font-bold text-[#7A6456] tracking-wider uppercase mr-auto sm:mr-0">
+                  {displayedProducts.length} de {filteredProducts.length} galletas
+                </div>
+
                 {/* ORDENAR POR */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[#8C7667] font-semibold uppercase text-[11px]">ORDENAR POR</span>
+                  <span className="text-[#8C7667] font-semibold uppercase text-[11px]">ORDENAR</span>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
