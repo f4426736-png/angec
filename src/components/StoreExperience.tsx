@@ -520,6 +520,19 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
 
               {openFlavor && (
                 <div className="mt-2.5 space-y-2 text-xs max-h-48 overflow-y-auto pr-1">
+                  {/* Opción 'Todos los sabores' ubicada arriba de Chocolate */}
+                  <label className="flex items-center gap-2.5 cursor-pointer text-[#4A3225] hover:text-[#BA2A5D] transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={selectedFlavors.length === 0}
+                      onChange={() => setSelectedFlavors([])}
+                      className="w-4 h-4 accent-[#BA2A5D] rounded cursor-pointer"
+                    />
+                    <span className={selectedFlavors.length === 0 ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>
+                      Todos los sabores
+                    </span>
+                  </label>
+
                   {FLAVORS_LIST.map((flav) => {
                     const isChecked = selectedFlavors.includes(flav);
                     return (
@@ -1141,15 +1154,27 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               <div className="mb-4">
                 <div className="text-xs font-bold uppercase text-[#382015] mb-2">Sabor</div>
                 <div className="space-y-2 text-xs max-h-36 overflow-y-auto">
+                  {/* Opción 'Todos los sabores' arriba de Chocolate */}
+                  <label className="flex items-center gap-2 text-[#4A3225] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedFlavors.length === 0}
+                      onChange={() => setSelectedFlavors([])}
+                      className="accent-[#BA2A5D]"
+                    />
+                    <span className={selectedFlavors.length === 0 ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>
+                      Todos los sabores
+                    </span>
+                  </label>
                   {FLAVORS_LIST.map((flav) => (
-                    <label key={flav} className="flex items-center gap-2 text-[#4A3225]">
+                    <label key={flav} className="flex items-center gap-2 text-[#4A3225] cursor-pointer">
                       <input
                         type="checkbox"
                         checked={selectedFlavors.includes(flav)}
                         onChange={() => handleFlavorToggle(flav)}
                         className="accent-[#BA2A5D]"
                       />
-                      <span>{flav}</span>
+                      <span className={selectedFlavors.includes(flav) ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>{flav}</span>
                     </label>
                   ))}
                 </div>
