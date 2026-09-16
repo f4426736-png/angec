@@ -88,7 +88,7 @@ export default function App() {
   // Render StoreExperience when on #store
   if (currentHash === '#store') {
     return (
-      <div id="viewStoreWrapper" className="w-full min-h-screen bg-[#FAF6F0]">
+      <div id="viewStoreWrapper" className="w-full min-h-screen bg-[#FAF6F0] block">
         <StoreExperience onBackToHome={handleBackToHome} />
       </div>
     );

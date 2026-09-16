@@ -278,7 +278,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#F6F4EE] text-[#2C1810] font-sans selection:bg-[#EAE4DC] selection:text-[#2C1810] pb-0">
+    <div id="store" className="w-full min-h-screen bg-[#F6F4EE] text-[#2C1810] font-sans selection:bg-[#EAE4DC] selection:text-[#2C1810] pb-0 block">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#24140D] text-white px-5 py-3 rounded-xl shadow-2xl animate-fade-in border border-[#3A2216]">
@@ -432,7 +432,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="w-full max-w-[1320px] mx-auto px-6 py-4">
+      <div id="storeProductsGrid" className="w-full max-w-[1320px] mx-auto px-6 py-4 block">
         {/* Mobile filter button & count bar */}
         <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE4DC] w-full">
           <button
@@ -447,7 +447,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           </span>
         </div>
 
-        <div className="flex gap-6 items-start">
+        <div className="flex gap-6 items-start w-full">
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL (Exact Reference Layout)
              ========================================================= */}
@@ -634,7 +634,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               RIGHT COLUMN: BANNER + QUICK PILLS + 5-COLUMN GRID
              ========================================================= */}
-          <main className="flex-1 min-w-0 space-y-5">
+          <main className="flex-1 min-w-0 w-full space-y-5">
             
             {/* 1. TOP HERO BANNER */}
             <div className="h-[180px] w-full rounded-2xl bg-[#F3EFEA] p-8 flex justify-between items-center overflow-hidden border border-[#EAE4DC]/60">
@@ -803,7 +803,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* =============================================================
           COLECCIONES DESTACADAS (Centered with the same max-w and margins)
          ============================================================= */}
-      <div className="w-full max-w-[1320px] mx-auto px-6">
+      <div className="w-full max-w-[1320px] mx-auto px-6 block">
         <section className="w-full mt-10 sm:mt-14 pt-8 border-t border-[#EAE4DC]">
           {/* Header with decorative double arrows */}
           <div className="text-center mb-8">
