@@ -15,7 +15,8 @@ import {
   Sparkles,
   SlidersHorizontal,
   Search,
-  Cookie
+  Cookie,
+  User
 } from 'lucide-react';
 import {
   STORE_COOKIES,
@@ -32,19 +33,20 @@ interface StoreExperienceProps {
 export default function StoreExperience({ onBackToHome }: StoreExperienceProps) {
   // Filter state
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas las galletas');
-  const [selectedFlavors, setSelectedFlavors] = useState<string[]>(['Chocolate']);
+  const [selectedQuickTab, setSelectedQuickTab] = useState<string>('Todo');
+  const [selectedFlavors, setSelectedFlavors] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>(['Todas las marcas']);
   const [maxPrice, setMaxPrice] = useState<number>(20.0);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
-  const [displayCount, setDisplayCount] = useState<number>(12);
+  const [displayCount, setDisplayCount] = useState<number>(20);
   const [isNavSearchOpen, setIsNavSearchOpen] = useState<boolean>(false);
 
   // Accordion open/close state for filters
   const [openCategory, setOpenCategory] = useState(true);
-  const [openFlavor, setOpenFlavor] = useState(true);
-  const [openPrice, setOpenPrice] = useState(true);
-  const [openBrand, setOpenBrand] = useState(true);
+  const [openFlavor, setOpenFlavor] = useState(false);
+  const [openPrice, setOpenPrice] = useState(false);
+  const [openBrand, setOpenBrand] = useState(false);
 
   // Mobile filters drawer
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
@@ -188,9 +190,30 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
     });
   };
 
+  // Handle Quick Category Pill selection
+  const handleQuickTabSelect = (tab: string) => {
+    setSelectedQuickTab(tab);
+    if (tab === 'Todo') {
+      setSelectedCategory('Todas las galletas');
+    } else if (tab === 'Galletas') {
+      setSelectedCategory('Clásicas');
+    } else if (tab === 'Postres') {
+      setSelectedCategory('Postres');
+    } else if (tab === 'Bebidas') {
+      setSelectedCategory('Bebidas');
+    } else if (tab === 'Promociones') {
+      setSelectedCategory('Todas las galletas');
+    }
+  };
+
   // Filtered and sorted products
   const filteredProducts = useMemo(() => {
     return STORE_COOKIES.filter((item) => {
+      // Quick tab Promotions check
+      if (selectedQuickTab === 'Promociones') {
+        if (!item.badge && item.price > 3.0) return false;
+      }
+
       // Category filter
       if (selectedCategory !== 'Todas las galletas') {
         if (selectedCategory === 'Sin azúcar' && !item.sugarFree && item.category !== 'Sin azúcar') {
@@ -241,7 +264,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       const bScore = (b.badge ? 100 : 0) + (b.ratingCount || 0);
       return bScore - aScore;
     });
-  }, [selectedCategory, selectedFlavors, selectedBrands, maxPrice, searchQuery, sortBy]);
+  }, [selectedCategory, selectedQuickTab, selectedFlavors, selectedBrands, maxPrice, searchQuery, sortBy]);
 
   const displayedProducts = useMemo(() => {
     return filteredProducts.slice(0, displayCount);
@@ -255,41 +278,41 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#FAF6F0] text-[#382015] font-sans selection:bg-[#F3D1DC] selection:text-[#382015] pb-0">
+    <div className="w-full min-h-screen bg-[#F6F4EE] text-[#2C1810] font-sans selection:bg-[#EAE4DC] selection:text-[#2C1810] pb-0">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#382015] text-white px-5 py-3 rounded-xl shadow-2xl animate-fade-in border border-[#523324]">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#24140D] text-white px-5 py-3 rounded-xl shadow-2xl animate-fade-in border border-[#3A2216]">
           <Check className="w-5 h-5 text-emerald-400" />
           <span className="text-sm font-medium">{toastMessage}</span>
         </div>
       )}
 
       {/* -------------------------------------------------------------
-          TOP BAR NAVIGATION (Cream Navbar - Full Width & Centered)
+          TOP BAR NAVIGATION (Matches exact reference header)
          ------------------------------------------------------------- */}
-      <header className="sticky top-0 z-50 w-full bg-[#FAF6F0] backdrop-blur-md border-b border-[#EAE0D5] transition-all shadow-xs">
-        <div className="w-full px-6 py-3 flex items-center justify-between gap-4">
-          {/* Logo (Izquierda): Alineado completamente a la izquierda */}
-          <div className="flex-1 flex items-center justify-start">
+      <header className="sticky top-0 z-50 w-full bg-[#F6F4EE] backdrop-blur-md border-b border-[#EAE4DC] transition-all">
+        <div className="w-full max-w-[1580px] mx-auto px-6 sm:px-10 py-3.5 flex items-center justify-between gap-4">
+          {/* Logo (Izquierda) */}
+          <div className="flex items-center">
             <button
               onClick={onBackToHome}
               className="flex items-center gap-2 group cursor-pointer select-none bg-transparent border-none p-0 focus:outline-none transition-transform active:scale-98 shrink-0"
-              title="Cookie Planet ♥ - Volver al Inicio"
+              title="Cookie Planet"
             >
-              <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#5A3828]/10 flex items-center justify-center text-[#5A3828] group-hover:bg-[#BA2A5D]/10 group-hover:text-[#BA2A5D] transition-colors">
-                <Cookie className="w-5 h-5 sm:w-5.5 sm:h-5.5 fill-[#5A3828]/15 text-[#5A3828] group-hover:text-[#BA2A5D] transition-colors" />
-              </span>
-              <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-[#382015] flex items-center gap-1">
-                Cookie Planet <span className="text-[#BA2A5D] text-base sm:text-lg">♥</span>
+              <div className="w-7 h-7 rounded-full border border-[#2C1810] flex items-center justify-center text-[#2C1810]">
+                <Cookie className="w-4 h-4 text-[#2C1810]" />
+              </div>
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-[#2C1810] font-sans">
+                Cookie Planet
               </span>
             </button>
           </div>
 
-          {/* Menú Central: Inicio, About, Top Cookies, Merch, Store (Centrado en la pantalla) */}
-          <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-8 text-xs sm:text-sm font-semibold text-[#5A3828] shrink-0">
+          {/* Menú Central: Inicio, About, Top Cookies, March, Store */}
+          <nav className="hidden md:flex items-center justify-center gap-7 lg:gap-10 text-xs sm:text-[13px] font-medium text-[#4A3225] shrink-0">
             <button
               onClick={onBackToHome}
-              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
+              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
             >
               Inicio
             </button>
@@ -299,7 +322,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#about';
               }}
-              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
+              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
             >
               About
             </a>
@@ -309,88 +332,103 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#projects';
               }}
-              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
+              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
             >
               Top Cookies
             </a>
             <a
-              href="#hola"
+              href="#march"
               onClick={(e) => {
                 e.preventDefault();
-                window.location.hash = '#hola';
+                window.location.hash = '#march';
               }}
-              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
+              className="hover:text-[#2C1810] transition-colors cursor-pointer py-1"
             >
-              Merch
+              March
             </a>
-            {/* Store (Activo con indicador/subrayado rosa-magenta) */}
+            {/* Store (Activo con subrayado sobrio) */}
             <div className="relative inline-flex flex-col items-center py-1">
-              <span className="text-[#BA2A5D] font-bold cursor-default">
+              <span className="text-[#2C1810] font-semibold cursor-default">
                 Store
               </span>
-              <span className="absolute -bottom-1 left-0 right-0 h-[2.5px] bg-[#BA2A5D] rounded-full" />
+              <span className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-[#2C1810]" />
             </div>
           </nav>
 
-          {/* Herramientas (Derecha): Pegadas totalmente a la derecha */}
-          <div className="flex-1 flex items-center justify-end gap-2.5 sm:gap-3.5 shrink-0">
-            {/* Icono de Lupa (Búsqueda) */}
+          {/* Herramientas (Derecha): Lupa, Usuario, Favoritos (con badge 2), Carrito */}
+          <div className="flex items-center gap-3.5 sm:gap-4 shrink-0 text-[#2C1810]">
+            {/* Lupa */}
             <button
               onClick={() => {
                 setIsNavSearchOpen(!isNavSearchOpen);
                 handleScrollToGrid();
               }}
-              className="p-2 rounded-full hover:bg-[#EFE5D8] text-[#5A3828] hover:text-[#BA2A5D] transition-colors cursor-pointer"
-              title="Buscar galletas"
-              aria-label="Buscar galletas"
+              className="p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
+              title="Buscar"
+              aria-label="Buscar"
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-4.5 h-4.5" />
             </button>
 
-            {/* Icono de Corazón con badge/contador en rosa (2) */}
+            {/* Usuario */}
+            <button
+              onClick={() => showToast('Perfil de usuario')}
+              className="p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
+              title="Mi Cuenta"
+              aria-label="Mi Cuenta"
+            >
+              <User className="w-4.5 h-4.5" />
+            </button>
+
+            {/* Corazón Favoritos con badge 2 */}
             <button
               onClick={() => {
-                showToast(`Tienes ${favorites.size > 0 ? favorites.size : 2} galletas guardadas`);
+                showToast(`Tienes ${favorites.size > 0 ? favorites.size : 2} favoritos guardados`);
               }}
-              className="relative p-2 rounded-full hover:bg-[#EFE5D8] text-[#5A3828] hover:text-[#BA2A5D] transition-colors cursor-pointer"
-              title="Mis Favoritos (2)"
-              aria-label="Mis Favoritos"
+              className="relative p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
+              title="Favoritos"
+              aria-label="Favoritos"
             >
-              <Heart className="w-5 h-5 fill-[#BA2A5D] text-[#BA2A5D]" />
-              <span className="absolute -top-0.5 -right-0.5 bg-[#BA2A5D] text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+              <Heart className="w-4.5 h-4.5" />
+              <span className="absolute -top-1.5 -right-2 bg-[#DDA15E] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {favorites.size > 0 ? favorites.size : 2}
               </span>
             </button>
 
-            {/* Botón de Carrito Magenta redondeado tipo píldora con 🛒 Carrito 1 */}
+            {/* Bolsa / Carrito */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#BA2A5D] hover:bg-[#A32350] active:scale-95 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all duration-200 shadow-md hover:shadow-rose-900/20 cursor-pointer"
-              aria-label="Abrir Carrito"
+              className="relative p-1 text-[#2C1810] hover:text-black transition-colors cursor-pointer"
+              title="Carrito de compras"
+              aria-label="Carrito de compras"
             >
-              <span className="text-sm">🛒</span>
-              <span>Carrito {totalCartCount > 0 ? totalCartCount : 1}</span>
+              <ShoppingCart className="w-4.5 h-4.5" />
+              {totalCartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 bg-[#2C1810] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {totalCartCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
 
-        {/* Input desplegable de búsqueda rápida si se activa la lupa */}
+        {/* Input desplegable de búsqueda rápida */}
         {isNavSearchOpen && (
-          <div className="w-full bg-[#FAF6F0] border-t border-[#EAE0D5] px-4 py-2.5 sm:hidden transition-all">
-            <div className="relative w-full">
+          <div className="w-full bg-[#F6F4EE] border-t border-[#EAE4DC] px-6 py-2.5 transition-all">
+            <div className="max-w-[1580px] mx-auto relative">
               <Search className="w-4 h-4 text-[#8C7667] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
-                placeholder="Buscar galletas por nombre, sabor..."
+                placeholder="Buscar galletas o postres..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
-                className="w-full bg-white border border-[#DFD3C6] rounded-full pl-9 pr-8 py-1.5 text-xs text-[#382015] placeholder-[#9B8779] focus:outline-none focus:border-[#BA2A5D]"
+                className="w-full bg-white border border-[#DFD3C6] rounded-full pl-9 pr-8 py-2 text-xs text-[#2C1810] placeholder-[#9B8779] focus:outline-none focus:border-[#2C1810]"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -401,58 +439,34 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       </header>
 
       {/* -------------------------------------------------------------
-          HERO BANNER (Full-width banner across the screen)
-         ------------------------------------------------------------- */}
-      <section className="relative w-full overflow-hidden bg-[#F8EFE4] border-b border-[#E8DDD0]">
-        <div className="relative w-full group">
-          <img
-            src="https://res.cloudinary.com/yxbhso8s/image/upload/v1789532304/ChatGPT_Image_15_sept_2026_11_17_45_p.m.png"
-            alt="Diferentes sabores, la misma felicidad - Galletas artesanales"
-            className="w-full h-auto block object-cover"
-            referrerPolicy="no-referrer"
-            loading="eager"
-          />
-          {/* Clickable CTA overlay positioned right over or accessible for users */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <button
-              onClick={handleScrollToGrid}
-              aria-label="Comprar ahora galletas artesanales"
-              className="pointer-events-auto opacity-0 hover:opacity-10 focus:opacity-100 transition-opacity absolute bottom-[18%] sm:bottom-[20%] md:bottom-[22%] bg-[#BA2A5D] text-white text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3.5 rounded-full shadow-lg cursor-pointer"
-            >
-              COMPRAR AHORA
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
       <div id="storeProductsGrid" className="w-full flex justify-center items-center py-6 px-4 sm:px-8 lg:px-12">
-        <div className="w-full max-w-[1536px] flex flex-col lg:flex-row gap-8 items-start justify-center mx-auto">
+        <div className="w-full max-w-[1580px] flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center mx-auto">
           {/* Mobile filter button & count bar */}
-          <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE0D5] w-full">
+          <div className="lg:hidden flex items-center justify-between mb-2 pb-3 border-b border-[#EAE4DC] w-full">
             <button
               onClick={() => setMobileFilterOpen(true)}
-              className="inline-flex items-center gap-2 bg-white border border-[#DED2C5] px-4 py-2 rounded-xl text-xs font-bold text-[#382015] shadow-xs"
+              className="inline-flex items-center gap-2 bg-[#F8F6F2] border border-[#EAE4DC] px-4 py-2 rounded-xl text-xs font-bold text-[#2C1810]"
             >
-              <SlidersHorizontal className="w-4 h-4 text-[#BA2A5D]" />
+              <SlidersHorizontal className="w-4 h-4 text-[#2C1810]" />
               <span>FILTRAR POR</span>
             </button>
             <span className="text-xs font-medium text-[#7A6456]">
-              {filteredProducts.length} productos encontrados
+              {filteredProducts.length} productos
             </span>
           </div>
 
           {/* =========================================================
-              LEFT SIDEBAR: FILTERS PANEL
+              LEFT SIDEBAR: FILTERS PANEL (Exact Reference Layout)
              ========================================================= */}
-          <aside className="hidden lg:block w-[280px] shrink-0 bg-white border border-[#EAE0D5] rounded-2xl p-5 shadow-xs sticky top-20">
-            <div className="border-b border-[#EAE0D5] pb-3 mb-4 flex items-center justify-between">
-              <h2 className="text-sm font-extrabold tracking-wider text-[#382015] uppercase">
+          <aside className="hidden lg:block w-[240px] shrink-0 bg-[#F8F6F2] border border-[#EBE6DE] rounded-2xl p-5 shadow-xs sticky top-20">
+            <div className="pb-3 mb-3 border-b border-[#EAE4DC]/60 flex items-center justify-between">
+              <h2 className="text-xs font-black tracking-wider text-[#2C1810] uppercase">
                 FILTRAR POR
               </h2>
               {(selectedCategory !== 'Todas las galletas' ||
+                selectedQuickTab !== 'Todo' ||
                 selectedFlavors.length > 0 ||
                 !selectedBrands.includes('Todas las marcas') ||
                 maxPrice < 20 ||
@@ -460,12 +474,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 <button
                   onClick={() => {
                     setSelectedCategory('Todas las galletas');
+                    setSelectedQuickTab('Todo');
                     setSelectedFlavors([]);
                     setSelectedBrands(['Todas las marcas']);
                     setMaxPrice(20.0);
                     setSearchQuery('');
                   }}
-                  className="text-[11px] text-[#BA2A5D] font-bold hover:underline"
+                  className="text-[10px] text-[#7A6456] font-bold hover:underline cursor-pointer"
                 >
                   Limpiar
                 </button>
@@ -473,33 +488,40 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Filter 1: Categoría */}
-            <div className="border-b border-[#F0E6DC] pb-4 mb-4">
+            <div className="border-b border-[#EAE4DC]/60 pb-4 mb-4">
               <button
                 type="button"
                 onClick={() => setOpenCategory(!openCategory)}
-                className="w-full flex items-center justify-between text-xs font-extrabold text-[#382015] uppercase tracking-wider py-1 hover:text-[#BA2A5D]"
+                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Categoría</span>
-                {openCategory ? <ChevronUp className="w-4 h-4 text-[#8C7667]" /> : <ChevronDown className="w-4 h-4 text-[#8C7667]" />}
+                {openCategory ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
               </button>
 
               {openCategory && (
-                <div className="mt-2.5 space-y-2 text-xs">
+                <div className="mt-2 space-y-2 text-xs">
                   {CATEGORIES_LIST.map((cat) => {
                     const isChecked = selectedCategory === cat;
                     return (
                       <label
                         key={cat}
-                        className="flex items-center gap-2.5 cursor-pointer text-[#4A3225] hover:text-[#BA2A5D] transition-colors"
+                        className="flex items-center gap-2.5 cursor-pointer text-[#4A3225] hover:text-[#2C1810] transition-colors"
                       >
                         <input
-                          type="radio"
-                          name="categoryFilter"
+                          type="checkbox"
                           checked={isChecked}
-                          onChange={() => setSelectedCategory(cat)}
-                          className="w-4 h-4 accent-[#BA2A5D] rounded cursor-pointer"
+                          onChange={() => {
+                            setSelectedCategory(cat);
+                            if (cat === 'Todas las galletas') setSelectedQuickTab('Todo');
+                            else if (cat === 'Clásicas') setSelectedQuickTab('Galletas');
+                            else if (cat === 'Postres') setSelectedQuickTab('Postres');
+                            else if (cat === 'Bebidas') setSelectedQuickTab('Bebidas');
+                          }}
+                          className="w-3.5 h-3.5 accent-[#2C1810] rounded cursor-pointer"
                         />
-                        <span className={isChecked ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>{cat}</span>
+                        <span className={`text-[12px] ${isChecked ? 'font-bold text-[#2C1810]' : 'font-normal text-[#5A4438]'}`}>
+                          {cat}
+                        </span>
                       </label>
                     );
                   })}
@@ -508,45 +530,32 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Filter 2: Sabor */}
-            <div className="border-b border-[#F0E6DC] pb-4 mb-4">
+            <div className="border-b border-[#EAE4DC]/60 pb-4 mb-4">
               <button
                 type="button"
                 onClick={() => setOpenFlavor(!openFlavor)}
-                className="w-full flex items-center justify-between text-xs font-extrabold text-[#382015] uppercase tracking-wider py-1 hover:text-[#BA2A5D]"
+                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Sabor</span>
-                {openFlavor ? <ChevronUp className="w-4 h-4 text-[#8C7667]" /> : <ChevronDown className="w-4 h-4 text-[#8C7667]" />}
+                {openFlavor ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
               </button>
 
               {openFlavor && (
-                <div className="mt-2.5 space-y-2 text-xs max-h-48 overflow-y-auto pr-1">
-                  {/* Opción 'Todos los sabores' ubicada arriba de Chocolate */}
-                  <label className="flex items-center gap-2.5 cursor-pointer text-[#4A3225] hover:text-[#BA2A5D] transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={selectedFlavors.length === 0}
-                      onChange={() => setSelectedFlavors([])}
-                      className="w-4 h-4 accent-[#BA2A5D] rounded cursor-pointer"
-                    />
-                    <span className={selectedFlavors.length === 0 ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>
-                      Todos los sabores
-                    </span>
-                  </label>
-
+                <div className="mt-2 space-y-1.5 text-xs max-h-48 overflow-y-auto pr-1">
                   {FLAVORS_LIST.map((flav) => {
                     const isChecked = selectedFlavors.includes(flav);
                     return (
                       <label
                         key={flav}
-                        className="flex items-center gap-2.5 cursor-pointer text-[#4A3225] hover:text-[#BA2A5D] transition-colors"
+                        className="flex items-center gap-2 cursor-pointer text-[#5A4438] hover:text-[#2C1810]"
                       >
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleFlavorToggle(flav)}
-                          className="w-4 h-4 accent-[#BA2A5D] rounded cursor-pointer"
+                          className="w-3.5 h-3.5 accent-[#2C1810] rounded cursor-pointer"
                         />
-                        <span className={isChecked ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>{flav}</span>
+                        <span className="text-[12px]">{flav}</span>
                       </label>
                     );
                   })}
@@ -555,19 +564,18 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Filter 3: Precio */}
-            <div className="border-b border-[#F0E6DC] pb-4 mb-4">
+            <div className="border-b border-[#EAE4DC]/60 pb-4 mb-4">
               <button
                 type="button"
                 onClick={() => setOpenPrice(!openPrice)}
-                className="w-full flex items-center justify-between text-xs font-extrabold text-[#382015] uppercase tracking-wider py-1 hover:text-[#BA2A5D]"
+                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Precio</span>
-                {openPrice ? <ChevronUp className="w-4 h-4 text-[#8C7667]" /> : <ChevronDown className="w-4 h-4 text-[#8C7667]" />}
+                {openPrice ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
               </button>
 
               {openPrice && (
-                <div className="mt-3">
-                  {/* Slider bar */}
+                <div className="mt-2.5">
                   <input
                     type="range"
                     min="0"
@@ -575,43 +583,43 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                     step="0.5"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(parseFloat(e.target.value))}
-                    className="w-full h-1.5 bg-[#EAE0D5] rounded-lg appearance-none cursor-pointer accent-[#BA2A5D]"
+                    className="w-full h-1 bg-[#DFD8CE] rounded-lg appearance-none cursor-pointer accent-[#2C1810]"
                   />
-                  <div className="flex items-center justify-between text-xs font-bold text-[#5A3828] mt-2">
-                    <span>S/ 0.00</span>
-                    <span className="text-[#BA2A5D]">Hasta S/ {maxPrice.toFixed(2)}</span>
+                  <div className="flex items-center justify-between text-[11px] text-[#5A4438] mt-1.5 font-medium">
+                    <span>$0.00</span>
+                    <span>$20.00</span>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Filter 4: Marca */}
-            <div className="pb-2 mb-4">
+            <div className="pb-3 mb-3 border-b border-[#EAE4DC]/60">
               <button
                 type="button"
                 onClick={() => setOpenBrand(!openBrand)}
-                className="w-full flex items-center justify-between text-xs font-extrabold text-[#382015] uppercase tracking-wider py-1 hover:text-[#BA2A5D]"
+                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Marca</span>
-                {openBrand ? <ChevronUp className="w-4 h-4 text-[#8C7667]" /> : <ChevronDown className="w-4 h-4 text-[#8C7667]" />}
+                {openBrand ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
               </button>
 
               {openBrand && (
-                <div className="mt-2.5 space-y-2 text-xs">
+                <div className="mt-2 space-y-1.5 text-xs">
                   {BRANDS_LIST.map((brand) => {
                     const isChecked = selectedBrands.includes(brand);
                     return (
                       <label
                         key={brand}
-                        className="flex items-center gap-2.5 cursor-pointer text-[#4A3225] hover:text-[#BA2A5D] transition-colors"
+                        className="flex items-center gap-2 cursor-pointer text-[#5A4438] hover:text-[#2C1810]"
                       >
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleBrandToggle(brand)}
-                          className="w-4 h-4 accent-[#BA2A5D] rounded cursor-pointer"
+                          className="w-3.5 h-3.5 accent-[#2C1810] rounded cursor-pointer"
                         />
-                        <span className={isChecked ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>{brand}</span>
+                        <span className="text-[12px]">{brand}</span>
                       </label>
                     );
                   })}
@@ -619,194 +627,210 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               )}
             </div>
 
-            {/* Bottom cute doodle box: "Elige tu favorita ♥" */}
-            <div className="mt-6 pt-5 border-t border-dashed border-[#DFD3C6] text-center flex flex-col items-center">
-              <div className="text-3xl mb-1">🍪</div>
-              <p className="font-handwriting text-xl text-[#382015] font-bold leading-tight">
+            {/* Bottom cute cookie doodle illustration: "Elige tu favorita" */}
+            <div className="mt-5 pt-3 text-center flex flex-col items-center justify-center">
+              <div className="w-12 h-12 rounded-full border-2 border-dashed border-[#8C7667] flex items-center justify-center text-[#2C1810] mb-1">
+                <Cookie className="w-6 h-6 text-[#5A3828]" />
+              </div>
+              <p className="font-serif italic text-sm text-[#382015] font-bold leading-tight mt-1">
                 Elige tu
                 <br />
-                favorita ♥
+                favorita <span className="font-sans not-italic text-xs">♡</span>
               </p>
             </div>
           </aside>
 
           {/* =========================================================
-              RIGHT PRODUCTS COLUMN (Expands to fill all available space)
+              RIGHT COLUMN: BANNER + QUICK PILLS + 5-COLUMN GRID
              ========================================================= */}
-          <main className="flex-1 min-w-0 w-full">
-            {/* Top Toolbar (Search Bar + Results count + sorting dropdowns) */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-3 border-b border-[#EAE0D5]">
-              {/* Search input in products grid */}
-              <div className="relative w-full md:w-72">
-                <Search className="w-4 h-4 text-[#8C7667] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Buscar galletas..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white border border-[#DED2C5] rounded-full pl-9 pr-8 py-1.5 text-xs text-[#382015] placeholder-[#9B8779] focus:outline-none focus:border-[#BA2A5D] focus:ring-1 focus:ring-[#BA2A5D] transition-all"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
+          <main className="flex-1 min-w-0 w-full space-y-6">
+            
+            {/* 1. TOP HERO BANNER (Cream/Grey #F3EFEA with Cookies & Chocolate display) */}
+            <div className="w-full bg-[#F3EFEA] border border-[#E8E2D9] rounded-2xl overflow-hidden flex flex-col md:flex-row items-center justify-between relative shadow-2xs">
+              {/* Left text content */}
+              <div className="p-6 sm:p-8 md:p-10 z-10 max-w-xl">
+                <span className="text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-2">
+                  GALLETAS &amp; POSTRES
+                </span>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#2C1810] leading-tight font-serif tracking-tight">
+                  Dulces momentos,
+                  <br />
+                  en cada bocado
+                </h1>
+                <p className="mt-2.5 text-xs sm:text-sm text-[#7A6456] max-w-md">
+                  Descubre nuestras galletas artesanales y postres hechos con ingredientes de la mejor calidad.
+                </p>
+                <button
+                  onClick={handleScrollToGrid}
+                  className="mt-5 inline-flex items-center gap-2 bg-[#2C1810] hover:bg-[#1C0F0A] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
+                >
+                  <span>Ver colección</span>
+                  <span>→</span>
+                </button>
               </div>
 
-              <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 text-xs font-medium text-[#4A3225]">
-                <div className="text-xs font-bold text-[#7A6456] tracking-wider uppercase mr-auto sm:mr-0">
-                  {displayedProducts.length} de {filteredProducts.length} galletas
-                </div>
-
-                {/* ORDENAR POR */}
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[#8C7667] font-semibold uppercase text-[11px]">ORDENAR</span>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                    className="bg-white border border-[#DED2C5] rounded-md px-2.5 py-1 text-xs text-[#382015] font-medium focus:outline-none focus:border-[#BA2A5D] cursor-pointer"
-                  >
-                    <option value="popular">Más populares</option>
-                    <option value="price-asc">Menor precio</option>
-                    <option value="price-desc">Mayor precio</option>
-                    <option value="rating">Mejor valoradas</option>
-                  </select>
-                </div>
-
-                {/* MOSTRAR */}
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[#8C7667] font-semibold text-[11px]">Mostrar</span>
-                  <select
-                    value={displayCount}
-                    onChange={(e) => setDisplayCount(parseInt(e.target.value))}
-                    className="bg-white border border-[#DED2C5] rounded-md px-2.5 py-1 text-xs text-[#382015] font-medium focus:outline-none focus:border-[#BA2A5D] cursor-pointer"
-                  >
-                    <option value={12}>12</option>
-                    <option value={24}>24</option>
-                    <option value={48}>48</option>
-                  </select>
-                </div>
+              {/* Right image display (cookies stack & chocolate) */}
+              <div className="w-full md:w-1/2 h-56 md:h-72 relative overflow-hidden flex items-center justify-center">
+                <img
+                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=80"
+                  alt="Dulces momentos en cada bocado"
+                  className="w-full h-full object-cover object-center"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1000&q=80";
+                  }}
+                />
+                {/* Soft gradient edge transition */}
+                <div className="hidden md:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#F3EFEA] to-transparent pointer-events-none" />
               </div>
             </div>
 
-            {/* Product Cards Grid (Spans horizontally across all remaining width) */}
+            {/* 2. QUICK CATEGORY PILLS + SORT BAR */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
+              {/* Pills: Todo, Galletas, Postres, Bebidas, Promociones */}
+              <div className="flex flex-wrap items-center gap-2">
+                {[
+                  { name: 'Todo', value: 'Todo' },
+                  { name: 'Galletas', value: 'Galletas' },
+                  { name: 'Postres', value: 'Postres' },
+                  { name: 'Bebidas', value: 'Bebidas' },
+                  { name: 'Promociones', value: 'Promociones' }
+                ].map((tab) => {
+                  const isActive = selectedQuickTab === tab.value;
+                  return (
+                    <button
+                      key={tab.value}
+                      onClick={() => handleQuickTabSelect(tab.value)}
+                      className={`px-5 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? 'bg-[#24140D] text-white shadow-xs font-semibold'
+                          : 'bg-white hover:bg-[#EFEAE2] text-[#4A3225] border border-[#EAE4DC]'
+                      }`}
+                    >
+                      {tab.name}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Ordenar por selector */}
+              <div className="flex items-center gap-2 self-end sm:self-auto text-xs font-medium text-[#4A3225]">
+                <span className="text-[#7A6456] text-xs">Ordenar por</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="bg-white border border-[#EAE4DC] rounded-xl px-3 py-1.5 text-xs text-[#2C1810] font-medium focus:outline-none focus:border-[#2C1810] cursor-pointer shadow-2xs"
+                >
+                  <option value="popular">Más populares</option>
+                  <option value="price-asc">Menor precio</option>
+                  <option value="price-desc">Mayor precio</option>
+                  <option value="rating">Mejor valoradas</option>
+                </select>
+              </div>
+            </div>
+
+            {/* 3. PRODUCTS GRID (EXACT 5 COLUMNS ON LARGE SCREENS) */}
             {displayedProducts.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-[#EAE0D5] p-12 text-center my-6">
+              <div className="bg-white rounded-2xl border border-[#EAE4DC] p-12 text-center my-6">
                 <div className="text-5xl mb-3">🍪</div>
-                <h3 className="text-lg font-bold text-[#382015] mb-1">No se encontraron galletas con estos filtros</h3>
-                <p className="text-sm text-[#7A6456] max-w-md mx-auto mb-5">
-                  Prueba seleccionando otras categorías, sabores o ajustando el rango de precio para ver más opciones.
+                <h3 className="text-base font-bold text-[#2C1810] mb-1">No se encontraron productos</h3>
+                <p className="text-xs text-[#7A6456] max-w-md mx-auto mb-4">
+                  Prueba cambiando la categoría o restableciendo los filtros para ver todas las galletas y postres disponibles.
                 </p>
                 <button
                   onClick={() => {
                     setSelectedCategory('Todas las galletas');
+                    setSelectedQuickTab('Todo');
                     setSelectedFlavors([]);
                     setSelectedBrands(['Todas las marcas']);
                     setMaxPrice(20.0);
                     setSearchQuery('');
                   }}
-                  className="bg-[#BA2A5D] text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#A32350] transition-colors"
+                  className="bg-[#2C1810] text-white px-5 py-2 rounded-full text-xs font-semibold hover:bg-black transition-colors cursor-pointer"
                 >
-                  Restablecer Filtros
+                  Restablecer
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5 w-full">
-                {displayedProducts.map((cookie) => {
-                  const isFav = favorites.has(cookie.id);
-                  const isBestSeller = cookie.badge === 'Más vendido';
-                  const isNew = cookie.badge === 'Nuevo';
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full">
+                {displayedProducts.map((product) => {
+                  const isFav = favorites.has(product.id);
 
                   return (
                     <article
-                      key={cookie.id}
-                      className="bg-white rounded-xl border border-[#EDE4DB] overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                      key={product.id}
+                      className="bg-white rounded-xl border border-[#EAE4DC]/80 overflow-hidden shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
                     >
-                      {/* Top Image area with badges and heart */}
-                      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#FAF6F0]">
+                      {/* Top Image container */}
+                      <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#FAF6F0]">
                         <img
-                          src={cookie.image}
-                          alt={cookie.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                           referrerPolicy="no-referrer"
                           onError={(e) => {
-                            e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80";
+                            e.currentTarget.src = "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80";
                           }}
                         />
 
-                        {/* Top Badges */}
-                        {isBestSeller && (
-                          <div className="absolute top-2.5 left-2.5 bg-[#BA2A5D] text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
-                            Más vendido
-                          </div>
-                        )}
-                        {isNew && (
-                          <div className="absolute top-2.5 left-2.5 bg-[#2A9D8F] text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
-                            Nuevo
-                          </div>
-                        )}
-
-                        {/* Favorite Heart Outline */}
+                        {/* Favorite Heart Outline (Top Right) */}
                         <button
                           type="button"
-                          onClick={(e) => toggleFavorite(cookie.id, e)}
-                          className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-gray-500 hover:text-[#BA2A5D] hover:scale-110 transition-all shadow-xs"
+                          onClick={(e) => toggleFavorite(product.id, e)}
+                          className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-gray-400 hover:text-rose-600 hover:scale-110 transition-all shadow-2xs cursor-pointer"
                           title={isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-                          aria-label={`Favorito ${cookie.name}`}
+                          aria-label={`Favorito ${product.name}`}
                         >
                           <Heart
-                            className={`w-4 h-4 ${
-                              isFav ? 'fill-[#BA2A5D] text-[#BA2A5D]' : 'text-gray-600 stroke-[2]'
+                            className={`w-3.5 h-3.5 ${
+                              isFav ? 'fill-rose-500 text-rose-500' : 'text-gray-500 stroke-[1.8]'
                             }`}
                           />
                         </button>
                       </div>
 
-                      {/* Content Area */}
-                      <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between gap-2.5">
+                      {/* Card Content */}
+                      <div className="p-3 flex flex-col flex-1 justify-between gap-2">
                         <div>
                           {/* Title */}
-                          <h3 className="text-xs sm:text-[13px] font-bold text-[#2E180D] leading-snug line-clamp-2 min-h-[34px]">
-                            {cookie.name}
+                          <h3 className="text-xs font-semibold text-[#2C1810] truncate">
+                            {product.name}
                           </h3>
 
                           {/* Price */}
-                          <div className="mt-1 text-sm font-extrabold text-[#2E180D]">
-                            S/ {cookie.price.toFixed(2)}
+                          <div className="mt-0.5 text-xs font-bold text-[#2C1810]">
+                            ${product.price.toFixed(2)}
                           </div>
 
                           {/* Rating stars */}
-                          <div className="flex items-center gap-1.5 mt-1">
+                          <div className="flex items-center gap-1 mt-1">
                             <div className="flex items-center text-amber-400">
                               {[1, 2, 3, 4, 5].map((star) => (
                                 <Star
                                   key={star}
-                                  className={`w-3 h-3 ${
-                                    star <= Math.round(cookie.rating)
+                                  className={`w-2.5 h-2.5 ${
+                                    star <= Math.round(product.rating)
                                       ? 'fill-amber-400 text-amber-400'
                                       : 'fill-gray-200 text-gray-200'
                                   }`}
                                 />
                               ))}
                             </div>
-                            <span className="text-[11px] font-medium text-[#7A6456]">
-                              {cookie.rating.toFixed(1)}/5
+                            <span className="text-[10px] text-[#7A6456]">
+                              {product.rating.toFixed(1)} {product.ratingCount ? `(${product.ratingCount})` : ''}
                             </span>
                           </div>
                         </div>
 
-                        {/* AGREGAR AL CARRITO button */}
+                        {/* Agregar al carrito button (Dark full rounded button) */}
                         <button
                           type="button"
-                          onClick={(e) => addToCart(cookie.id, e)}
-                          className="w-full bg-[#4A2E1F] hover:bg-[#382015] active:scale-98 text-white rounded-md py-2 px-2 flex items-center justify-center gap-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors shadow-xs"
+                          onClick={(e) => addToCart(product.id, e)}
+                          className="w-full bg-[#2C1810] hover:bg-[#1A0E08] active:scale-98 text-white rounded-lg py-1.5 px-2 flex items-center justify-center gap-1.5 text-[11px] font-medium transition-colors shadow-2xs mt-1 cursor-pointer"
                         >
-                          <ShoppingCart className="w-3.5 h-3.5" />
-                          <span>AGREGAR AL CARRITO</span>
+                          <ShoppingCart className="w-3 h-3" />
+                          <span>Agregar al carrito</span>
                         </button>
                       </div>
                     </article>
@@ -822,7 +846,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           COLECCIONES DESTACADAS (Centered with the same max-w and margins)
          ============================================================= */}
       <div className="w-full flex justify-center items-center px-4 sm:px-8 lg:px-12">
-        <section className="w-full max-w-[1536px] mx-auto mt-10 sm:mt-14 pt-8 border-t border-[#EAE0D5]">
+        <section className="w-full max-w-[1580px] mx-auto mt-10 sm:mt-14 pt-8 border-t border-[#EAE4DC]">
           {/* Header with decorative double arrows */}
           <div className="text-center mb-8">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#382015] tracking-tight font-serif inline-flex items-center gap-3">
@@ -946,34 +970,31 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       </div>
 
       {/* =============================================================
-          BOTTOM WAVE & CHOCOLATE FOOTER BANNER (from IMAGENNNN.png)
+          SOFT CREAM FOOTER (Harmonious with Store palette)
          ============================================================= */}
-      <footer className="mt-20 relative bg-[#382015] text-[#F5EDE6] pt-12 pb-14 overflow-hidden">
-        {/* Decorative Wave Top Edge */}
-        <div className="absolute top-0 left-0 right-0 h-4 bg-[#FAF6F0] rounded-b-[40px]"></div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          {/* Main Footer quote from image */}
-          <div className="inline-flex items-center justify-center gap-3 sm:gap-6 text-sm sm:text-lg font-serif italic text-[#FDF9F5] tracking-wide">
-            <span className="text-rose-300 text-base">♥</span>
-            <span className="border-t border-[#6E4B38] w-8 sm:w-16"></span>
-            <span className="font-medium">Galletas que hacen la vida más dulce</span>
-            <span className="border-t border-[#6E4B38] w-8 sm:w-16"></span>
-            <span className="text-rose-300 text-base">♥</span>
+      <footer className="mt-20 border-t border-[#EAE0D5] bg-[#FAF5EF] text-[#382015] pt-12 pb-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Main Footer quote */}
+          <div className="inline-flex items-center justify-center gap-3 sm:gap-6 text-sm sm:text-lg font-serif italic text-[#382015] tracking-wide">
+            <span className="text-[#BA2A5D] text-base">♥</span>
+            <span className="border-t border-[#DED2C5] w-8 sm:w-16"></span>
+            <span className="font-semibold">Galletas que hacen la vida más dulce</span>
+            <span className="border-t border-[#DED2C5] w-8 sm:w-16"></span>
+            <span className="text-[#BA2A5D] text-base">♥</span>
           </div>
 
-          <p className="mt-4 text-xs text-[#BAA393] max-w-lg mx-auto">
+          <p className="mt-4 text-xs text-[#7A6456] max-w-lg mx-auto">
             Horneadas artesanalmente a diario en lotes pequeños con ingredientes de calidad premium. Envíos y entregas en el día.
           </p>
 
-          <div className="mt-8 pt-6 border-t border-[#4E3123] flex flex-col sm:flex-row items-center justify-between text-xs text-[#A89182] gap-4">
+          <div className="mt-8 pt-6 border-t border-[#EAE0D5] flex flex-col sm:flex-row items-center justify-between text-xs text-[#7A6456] gap-4">
             <div>
               © 2026 Cookie Planet — Todos los derechos reservados.
             </div>
             <div className="flex items-center gap-4">
               <button
                 onClick={onBackToHome}
-                className="hover:text-white underline underline-offset-4 cursor-pointer"
+                className="hover:text-[#BA2A5D] text-[#382015] font-semibold underline underline-offset-4 cursor-pointer transition-colors"
               >
                 Volver a la Página Principal
               </button>
@@ -1122,7 +1143,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
          ============================================================= */}
       {mobileFilterOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-end lg:hidden">
-          <div className="w-4/5 max-w-xs bg-white h-full p-5 overflow-y-auto flex flex-col justify-between">
+          <div className="w-4/5 max-w-xs bg-[#FFF9F3] border-l border-[#F2E8DC] h-full p-5 overflow-y-auto flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-[#EAE0D5] mb-4">
                 <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#382015]">

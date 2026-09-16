@@ -1,7 +1,7 @@
 export interface CookieProduct {
   id: string;
   name: string;
-  category: 'Clásicas' | 'Rellenas' | 'Sin azúcar' | 'Integrales' | 'Especiales';
+  category: string;
   flavor: string;
   brand: string;
   price: number;
@@ -18,8 +18,8 @@ export const CATEGORIES_LIST = [
   'Clásicas',
   'Rellenas',
   'Sin azúcar',
-  'Integrales',
-  'Especiales'
+  'Postres',
+  'Bebidas'
 ] as const;
 
 export const FLAVORS_LIST = [
@@ -45,150 +45,192 @@ export const BRANDS_LIST = [
 ] as const;
 
 export const STORE_COOKIES: CookieProduct[] = [
+  // ROW 1
   {
-    id: 'cookie-1',
-    name: 'Galletas con Chispas de Chocolate',
+    id: 'prod-1',
+    name: 'Clásicas',
     category: 'Clásicas',
     flavor: 'Chocolate',
     brand: 'Cookie Dream',
-    price: 6.50,
-    rating: 4.5,
-    ratingCount: 142,
+    price: 2.50,
+    rating: 4.8,
+    ratingCount: 124,
     badge: 'Más vendido',
     image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800&q=80',
-    description: 'Nuestra receta insignia con mantequilla dorada y abundantes chispas de chocolate belga semi-amargo.'
+    description: 'Nuestra clásica galleta horneada con mantequilla dorada y abundantes chispas de chocolate belga semi-amargo.'
   },
   {
-    id: 'cookie-2',
-    name: 'Galletas Doble Chocolate',
-    category: 'Especiales',
+    id: 'prod-2',
+    name: 'Doble Chocolate',
+    category: 'Clásicas',
     flavor: 'Chocolate',
     brand: 'Sweet Bites',
-    price: 7.50,
+    price: 3.00,
     rating: 4.7,
     ratingCount: 98,
-    badge: 'Nuevo',
     image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80',
     description: 'Intensa masa de cacao puro horneada con trozos de chocolate negro fundente.'
   },
   {
-    id: 'cookie-3',
-    name: 'Galletas Rellenas de Oreo',
-    category: 'Rellenas',
-    flavor: 'Oreo',
-    brand: 'Oreo',
-    price: 6.90,
-    rating: 4.6,
-    ratingCount: 112,
-    image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=800&q=80',
-    description: 'Crujiente masa artesanal rellena con una galleta Oreo entera y crema de vainilla.'
-  },
-  {
-    id: 'cookie-4',
-    name: 'Galletas de Fresa',
-    category: 'Especiales',
-    flavor: 'Fresa',
-    brand: 'Sweet Bites',
-    price: 6.50,
-    rating: 4.4,
-    ratingCount: 64,
-    image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=800&q=80',
-    description: 'Delicada galleta horneada con trozos de fresas naturales y chocolate blanco.'
-  },
-  {
-    id: 'cookie-5',
-    name: 'Galletas de Avena',
-    category: 'Integrales',
-    flavor: 'Vainilla',
-    brand: "Nature's Cookies",
-    price: 5.90,
-    rating: 4.3,
-    ratingCount: 87,
-    image: 'https://images.unsplash.com/photo-1597528662465-55ece5734101?auto=format&fit=crop&w=800&q=80',
-    description: 'Avena integral de grano entero, un toque de canela ceilán y pasas rubias jugosas.'
-  },
-  {
-    id: 'cookie-6',
-    name: 'Galletas de Mantequilla de Maní',
+    id: 'prod-3',
+    name: 'Red Velvet',
     category: 'Clásicas',
-    flavor: 'Mantequilla de maní',
-    brand: 'Cookie Dream',
-    price: 6.50,
-    rating: 4.6,
-    ratingCount: 104,
-    image: 'https://images.unsplash.com/photo-1548848221-0c2e497ed557?auto=format&fit=crop&w=800&q=80',
-    description: 'Mantequilla de maní tostado artesanal con su clásico entramado tradicional y pizca de sal marina.'
-  },
-  {
-    id: 'cookie-7',
-    name: 'Galletas de Limón',
-    category: 'Especiales',
-    flavor: 'Limón',
-    brand: 'Sweet Bites',
-    price: 6.50,
-    rating: 4.4,
-    ratingCount: 73,
-    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80',
-    description: 'Frescura cítrica con ralladura de limón amarillo y suave cubierta craquelada con azúcar glas.'
-  },
-  {
-    id: 'cookie-8',
-    name: 'Galletas Red Velvet',
-    category: 'Especiales',
     flavor: 'Red Velvet',
     brand: 'Sweet Bites',
-    price: 7.50,
-    rating: 4.6,
-    ratingCount: 135,
+    price: 2.75,
+    rating: 4.8,
+    ratingCount: 87,
     image: 'https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&w=800&q=80',
     description: 'Masa aterciopelada de cacao rojo con centro suave de crema de queso y chispas blancas.'
   },
   {
-    id: 'cookie-9',
-    name: 'Galletas de Chispas de Chocolate y Nueces',
+    id: 'prod-4',
+    name: 'Avena',
+    category: 'Clásicas',
+    flavor: 'Vainilla',
+    brand: "Nature's Cookies",
+    price: 2.50,
+    rating: 4.5,
+    ratingCount: 76,
+    image: 'https://images.unsplash.com/photo-1597528662465-55ece5734101?auto=format&fit=crop&w=800&q=80',
+    description: 'Avena integral de grano entero, toque de canela ceilán y pasas rubias jugosas.'
+  },
+  {
+    id: 'prod-5',
+    name: 'Cookies & Oreo',
+    category: 'Rellenas',
+    flavor: 'Oreo',
+    brand: 'Oreo',
+    price: 3.25,
+    rating: 4.8,
+    ratingCount: 103,
+    badge: 'Nuevo',
+    image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=800&q=80',
+    description: 'Crujiente masa artesanal rellena con galletas Oreo trituradas y crema de vainilla.'
+  },
+
+  // ROW 2
+  {
+    id: 'prod-6',
+    name: "M&M's",
     category: 'Clásicas',
     flavor: 'Chocolate',
-    brand: 'Chips Ahoy',
-    price: 7.50,
-    rating: 4.5,
-    ratingCount: 89,
-    image: 'https://images.unsplash.com/photo-1548365328-8c6db3220e4c?auto=format&fit=crop&w=800&q=80',
-    description: 'Equilibrio perfecto entre chocolate fundido y nueces crocantes tostadas al punto.'
+    brand: 'Cookie Dream',
+    price: 2.75,
+    rating: 4.7,
+    ratingCount: 92,
+    image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80',
+    description: 'Masa crujiente y divertida cubierta con grageas confitadas de chocolate con leche.'
   },
   {
-    id: 'cookie-10',
-    name: 'Galletas de Coco',
-    category: 'Especiales',
-    flavor: 'Coco',
-    brand: "Nature's Cookies",
-    price: 6.00,
-    rating: 4.2,
-    ratingCount: 52,
-    image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80',
-    description: 'Horneadas con coco rallado dorado, textura tierna por dentro y crocante por fuera.'
-  },
-  {
-    id: 'cookie-11',
-    name: 'Galletas Rellenas de Caramelo',
+    id: 'prod-7',
+    name: 'Caramelo',
     category: 'Rellenas',
     flavor: 'Caramelo',
     brand: 'Cookie Dream',
-    price: 7.50,
-    rating: 4.7,
-    ratingCount: 161,
+    price: 3.00,
+    rating: 4.6,
+    ratingCount: 81,
     image: 'https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?auto=format&fit=crop&w=800&q=80',
     description: 'Sorprendente corazón líquido de dulce de caramelo salado derretido al primer mordisco.'
   },
   {
-    id: 'cookie-12',
-    name: 'Galletas de Café',
-    category: 'Especiales',
-    flavor: 'Café',
+    id: 'prod-8',
+    name: 'Limón',
+    category: 'Clásicas',
+    flavor: 'Limón',
+    brand: 'Sweet Bites',
+    price: 2.75,
+    rating: 4.5,
+    ratingCount: 69,
+    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80',
+    description: 'Frescura cítrica con ralladura de limón amarillo y glaseado suave en espiral.'
+  },
+  {
+    id: 'prod-9',
+    name: 'Cheesecake',
+    category: 'Postres',
+    flavor: 'Fresa',
+    brand: 'Sweet Bites',
+    price: 4.25,
+    rating: 4.9,
+    ratingCount: 143,
+    badge: 'Más vendido',
+    image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80',
+    description: 'Cremosa porción de cheesecake estilo New York horneada sobre base de galleta con salsa de frutos rojos.'
+  },
+  {
+    id: 'prod-10',
+    name: 'Brownie',
+    category: 'Postres',
+    flavor: 'Chocolate',
     brand: 'Cookie Dream',
-    price: 6.50,
-    rating: 4.3,
-    ratingCount: 68,
-    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
-    description: 'Aroma seductor de café espresso peruano con perlas de chocolate negro.'
+    price: 3.50,
+    rating: 4.7,
+    ratingCount: 95,
+    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80',
+    description: 'Brownie fudge con intenso sabor a chocolate belga, corteza craquelada y corazón húmedo.'
+  },
+
+  // ROW 3
+  {
+    id: 'prod-11',
+    name: 'Alfajores',
+    category: 'Postres',
+    flavor: 'Caramelo',
+    brand: 'Sweet Bites',
+    price: 3.50,
+    rating: 4.8,
+    ratingCount: 112,
+    image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80',
+    description: 'Suaves tapitas de maicena que se deshacen en la boca, rellenas de abundante manjar blanco y coco rallado.'
+  },
+  {
+    id: 'prod-12',
+    name: 'Cupcakes',
+    category: 'Postres',
+    flavor: 'Vainilla',
+    brand: 'Sweet Bites',
+    price: 3.75,
+    rating: 4.6,
+    ratingCount: 78,
+    image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=800&q=80',
+    description: 'Bizcochuelo esponjoso decorado artesanalmente con frosting de crema batida y toques de frambuesa.'
+  },
+  {
+    id: 'prod-13',
+    name: 'Tiramisú',
+    category: 'Postres',
+    flavor: 'Café',
+    brand: 'Sweet Bites',
+    price: 4.50,
+    rating: 4.9,
+    ratingCount: 64,
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80',
+    description: 'Clásico postre italiano en vaso con bizcochos humedecidos en espresso, crema de mascarpone y cacao en polvo.'
+  },
+  {
+    id: 'prod-14',
+    name: 'Integrales',
+    category: 'Clásicas',
+    flavor: 'Vainilla',
+    brand: "Nature's Cookies",
+    price: 2.75,
+    rating: 4.4,
+    ratingCount: 58,
+    image: 'https://images.unsplash.com/photo-1548848221-0c2e497ed557?auto=format&fit=crop&w=800&q=80',
+    description: 'Elaboradas con harinas 100% integrales, semillas seleccionadas y miel orgánica.'
+  },
+  {
+    id: 'prod-15',
+    name: 'Chocolate Blanco',
+    category: 'Clásicas',
+    flavor: 'Chocolate',
+    brand: 'Chips Ahoy',
+    price: 3.25,
+    rating: 4.6,
+    ratingCount: 73,
+    image: 'https://images.unsplash.com/photo-1548365328-8c6db3220e4c?auto=format&fit=crop&w=800&q=80',
+    description: 'Delicadas y doradas galletas con generosos trozos de chocolate blanco cremoso y nueces tostadas.'
   }
 ];
