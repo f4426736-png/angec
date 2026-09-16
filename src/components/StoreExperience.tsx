@@ -14,7 +14,8 @@ import {
   Check,
   Sparkles,
   SlidersHorizontal,
-  Search
+  Search,
+  Cookie
 } from 'lucide-react';
 import {
   STORE_COOKIES,
@@ -37,6 +38,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
   const [displayCount, setDisplayCount] = useState<number>(12);
+  const [isNavSearchOpen, setIsNavSearchOpen] = useState<boolean>(false);
 
   // Accordion open/close state for filters
   const [openCategory, setOpenCategory] = useState(true);
@@ -263,29 +265,29 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       )}
 
       {/* -------------------------------------------------------------
-          TOP BAR NAVIGATION (Global Dark Floating Navbar matching #inicio)
+          TOP BAR NAVIGATION (Cream Navbar matching reference design)
          ------------------------------------------------------------- */}
-      <header
-        className="sticky top-0 z-40 w-full transition-all duration-300 bg-[#0f1011]/95 backdrop-blur-md border-b border-white/10 shadow-lg"
-      >
-        <div className="w-full max-w-[1400px] mx-auto flex items-center justify-between px-4 sm:px-8 lg:px-12 py-3.5 sm:py-4">
-          {/* Brand Logo: Cookie Planet */}
+      <header className="sticky top-0 z-40 w-full bg-[#FAF6F0]/95 backdrop-blur-md border-b border-[#EAE0D5] transition-all shadow-xs">
+        <div className="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-8 py-3.5 sm:py-4 gap-4">
+          {/* Logo (Izquierda): Icono de galleta + Cookie Planet ♥ en marrón chocolate */}
           <button
             onClick={onBackToHome}
-            className="flex items-baseline gap-1 group text-left cursor-pointer select-none bg-transparent border-none p-0 focus:outline-none"
-            title="Cookie Planet® - Volver al Inicio"
+            className="flex items-center gap-2 group cursor-pointer select-none bg-transparent border-none p-0 focus:outline-none transition-transform active:scale-98 shrink-0"
+            title="Cookie Planet ♥ - Volver al Inicio"
           >
-            <span className="text-white text-xl sm:text-2xl font-bold tracking-tight group-hover:text-[#ff5b26] transition-colors">
-              Cookie Planet
+            <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#5A3828]/10 flex items-center justify-center text-[#5A3828] group-hover:bg-[#BA2A5D]/10 group-hover:text-[#BA2A5D] transition-colors">
+              <Cookie className="w-5 h-5 sm:w-5.5 sm:h-5.5 fill-[#5A3828]/15 text-[#5A3828] group-hover:text-[#BA2A5D] transition-colors" />
             </span>
-            <span className="text-[#ff5b26] text-xs sm:text-sm font-black">®</span>
+            <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-[#382015] flex items-center gap-1">
+              Cookie Planet <span className="text-[#BA2A5D] text-base sm:text-lg">♥</span>
+            </span>
           </button>
 
-          {/* Navigation Links + Cart Action */}
-          <nav className="flex items-center gap-3 sm:gap-6 lg:gap-8">
+          {/* Menú Central: Inicio, About, Top Cookies, Merch, Store (con subrayado magenta activo) */}
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs sm:text-sm font-semibold text-[#5A3828]">
             <button
               onClick={onBackToHome}
-              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer"
+              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
             >
               Inicio
             </button>
@@ -295,7 +297,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#about';
               }}
-              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer"
+              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
             >
               About
             </a>
@@ -305,7 +307,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#projects';
               }}
-              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer hidden md:inline"
+              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
             >
               Top Cookies
             </a>
@@ -315,56 +317,85 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 e.preventDefault();
                 window.location.hash = '#hola';
               }}
-              className="text-white/75 hover:text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer"
+              className="hover:text-[#BA2A5D] transition-colors cursor-pointer py-1"
             >
               Merch
             </a>
-            {/* Store (Active with Accent Line Indicator) */}
-            <div className="relative inline-flex items-center">
-              <span className="text-white font-bold text-xs sm:text-sm cursor-default">
+            {/* Store (Activo con indicador/subrayado rosa-magenta) */}
+            <div className="relative inline-flex flex-col items-center py-1">
+              <span className="text-[#BA2A5D] font-bold cursor-default">
                 Store
               </span>
-              <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#ff5b26] rounded-full" />
+              <span className="absolute -bottom-1 left-0 right-0 h-[2.5px] bg-[#BA2A5D] rounded-full" />
             </div>
+          </nav>
 
-            {/* Divider */}
-            <div className="h-4 w-[1px] bg-white/20 hidden sm:block"></div>
-
-            {/* Favorites Button */}
+          {/* Herramientas (Derecha): Lupa, Corazón con badge rosa (2), Botón magenta redondeado tipo píldora */}
+          <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+            {/* Icono de Lupa (Búsqueda) */}
             <button
               onClick={() => {
-                if (favorites.size === 0) {
-                  showToast('Aún no tienes galletas marcadas como favoritas');
-                } else {
-                  showToast(`Tienes ${favorites.size} galletas favoritas`);
-                }
+                setIsNavSearchOpen(!isNavSearchOpen);
+                handleScrollToGrid();
               }}
-              className="relative p-2 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors"
-              title="Mis Favoritos"
-              aria-label="Mis Favoritos"
+              className="p-2 rounded-full hover:bg-[#EFE5D8] text-[#5A3828] hover:text-[#BA2A5D] transition-colors cursor-pointer"
+              title="Buscar galletas"
+              aria-label="Buscar galletas"
             >
-              <Heart className={`w-4 h-4 sm:w-4.5 sm:h-4.5 ${favorites.size > 0 ? 'fill-[#ff5b26] text-[#ff5b26]' : ''}`} />
-              {favorites.size > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#ff5b26] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {favorites.size}
-                </span>
-              )}
+              <Search className="w-5 h-5" />
             </button>
 
-            {/* Cart Button with badge integrated in the Navbar */}
+            {/* Icono de Corazón con badge/contador en rosa (2) */}
             <button
-              onClick={() => setIsCartOpen(true)}
-              className="inline-flex items-center gap-2 bg-[#ff5b26] hover:bg-[#e04e1e] active:scale-95 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-orange-500/20"
-              aria-label="Abrir Carrito de Compras"
+              onClick={() => {
+                showToast(`Tienes ${favorites.size > 0 ? favorites.size : 2} galletas guardadas`);
+              }}
+              className="relative p-2 rounded-full hover:bg-[#EFE5D8] text-[#5A3828] hover:text-[#BA2A5D] transition-colors cursor-pointer"
+              title="Mis Favoritos (2)"
+              aria-label="Mis Favoritos"
             >
-              <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">Carrito</span>
-              <span className="bg-black/30 backdrop-blur-xs text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                {totalCartCount}
+              <Heart className="w-5 h-5 fill-[#BA2A5D] text-[#BA2A5D]" />
+              <span className="absolute -top-0.5 -right-0.5 bg-[#BA2A5D] text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                {favorites.size > 0 ? favorites.size : 2}
               </span>
             </button>
-          </nav>
+
+            {/* Botón de Carrito Magenta redondeado tipo píldora con 🛒 Carrito 1 */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#BA2A5D] hover:bg-[#A32350] active:scale-95 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all duration-200 shadow-md hover:shadow-rose-900/20 cursor-pointer"
+              aria-label="Abrir Carrito"
+            >
+              <span className="text-sm">🛒</span>
+              <span>Carrito {totalCartCount > 0 ? totalCartCount : 1}</span>
+            </button>
+          </div>
         </div>
+
+        {/* Input desplegable de búsqueda rápida si se activa la lupa */}
+        {isNavSearchOpen && (
+          <div className="w-full bg-[#FAF6F0] border-t border-[#EAE0D5] px-4 py-2.5 sm:hidden transition-all">
+            <div className="relative w-full">
+              <Search className="w-4 h-4 text-[#8C7667] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Buscar galletas por nombre, sabor..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+                className="w-full bg-white border border-[#DFD3C6] rounded-full pl-9 pr-8 py-1.5 text-xs text-[#382015] placeholder-[#9B8779] focus:outline-none focus:border-[#BA2A5D]"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </header>
 
       {/* -------------------------------------------------------------
