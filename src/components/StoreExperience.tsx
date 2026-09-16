@@ -291,7 +291,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           TOP BAR NAVIGATION (Matches exact reference header)
          ------------------------------------------------------------- */}
       <header className="sticky top-0 z-50 w-full bg-white/95 sm:bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#EAE4DC] transition-all">
-        <div className="flex justify-between items-center h-16 w-full max-w-[1600px] mx-auto px-8">
+        <div className="flex justify-between items-center h-16 w-full max-w-[1320px] mx-auto px-6">
           {/* Extremo Izquierdo (Logo) */}
           <button
             onClick={onBackToHome}
@@ -405,8 +405,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
 
         {/* Input desplegable de búsqueda rápida */}
         {isNavSearchOpen && (
-          <div className="w-full bg-white sm:bg-[#FAF8F5] border-t border-[#EAE4DC] px-8 py-2.5 transition-all">
-            <div className="max-w-[1600px] mx-auto relative">
+          <div className="w-full bg-white sm:bg-[#FAF8F5] border-t border-[#EAE4DC] px-6 py-2.5 transition-all">
+            <div className="max-w-[1320px] mx-auto relative">
               <Search className="w-4 h-4 text-[#8C7667] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
@@ -432,7 +432,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* -------------------------------------------------------------
           MAIN STORE AREA: FILTERS (LEFT) + PRODUCTS (RIGHT)
          ------------------------------------------------------------- */}
-      <div id="storeProductsGrid" className="w-full max-w-[1600px] mx-auto px-8 py-6">
+      <div id="storeProductsGrid" className="w-full max-w-[1320px] mx-auto px-6 py-4">
         {/* Mobile filter button & count bar */}
         <div className="lg:hidden flex items-center justify-between mb-4 pb-3 border-b border-[#EAE4DC] w-full">
           <button
@@ -447,13 +447,13 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           </span>
         </div>
 
-        <div className="flex gap-8 items-start">
+        <div className="flex gap-6 items-start">
           {/* =========================================================
               LEFT SIDEBAR: FILTERS PANEL (Exact Reference Layout)
              ========================================================= */}
-          <aside className="w-[260px] shrink-0 bg-[#F7F5F0] p-6 rounded-2xl border border-[#EAE4DC] space-y-6">
-            <div className="pb-3 mb-3 border-b border-[#EAE4DC]/60 flex items-center justify-between">
-              <h2 className="text-xs font-black tracking-wider text-[#2C1810] uppercase">
+          <aside className="w-[220px] shrink-0 bg-[#F5F3EF] p-5 rounded-2xl border border-[#EAE4DC] text-xs space-y-4">
+            <div className="pb-3 border-b border-[#EAE4DC]/60 flex items-center justify-between">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-[#2C1810]">
                 FILTRAR POR
               </h2>
               {(selectedCategory !== 'Todas las galletas' ||
@@ -471,7 +471,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                     setMaxPrice(20.0);
                     setSearchQuery('');
                   }}
-                  className="text-[10px] text-[#7A6456] font-bold hover:underline cursor-pointer"
+                  className="text-[10px] text-[#7A6456] font-semibold hover:underline cursor-pointer"
                 >
                   Limpiar
                 </button>
@@ -479,11 +479,11 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Filter 1: Categoría */}
-            <div className="border-b border-[#EAE4DC]/60 pb-4 mb-4">
+            <div className="border-b border-[#EAE4DC]/60 pb-3">
               <button
                 type="button"
                 onClick={() => setOpenCategory(!openCategory)}
-                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
+                className="w-full flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Categoría</span>
                 {openCategory ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
@@ -521,11 +521,11 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Filter 2: Sabor */}
-            <div className="border-b border-[#EAE4DC]/60 pb-4 mb-4">
+            <div className="border-b border-[#EAE4DC]/60 pb-3">
               <button
                 type="button"
                 onClick={() => setOpenFlavor(!openFlavor)}
-                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
+                className="w-full flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Sabor</span>
                 {openFlavor ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
@@ -555,11 +555,11 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Filter 3: Precio */}
-            <div className="border-b border-[#EAE4DC]/60 pb-4 mb-4">
+            <div className="border-b border-[#EAE4DC]/60 pb-3">
               <button
                 type="button"
                 onClick={() => setOpenPrice(!openPrice)}
-                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
+                className="w-full flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Precio</span>
                 {openPrice ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
@@ -585,11 +585,11 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Filter 4: Marca */}
-            <div className="pb-3 mb-3 border-b border-[#EAE4DC]/60">
+            <div className="pb-3 border-b border-[#EAE4DC]/60">
               <button
                 type="button"
                 onClick={() => setOpenBrand(!openBrand)}
-                className="w-full flex items-center justify-between text-xs font-bold text-[#2C1810] py-1 cursor-pointer"
+                className="w-full flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#2C1810] py-1 cursor-pointer"
               >
                 <span>Marca</span>
                 {openBrand ? <ChevronUp className="w-3.5 h-3.5 text-[#5A4235]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#5A4235]" />}
@@ -619,14 +619,14 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
             </div>
 
             {/* Bottom cute cookie doodle illustration: "Elige tu favorita" */}
-            <div className="mt-5 pt-3 text-center flex flex-col items-center justify-center">
-              <div className="w-12 h-12 rounded-full border-2 border-dashed border-[#8C7667] flex items-center justify-center text-[#2C1810] mb-1">
-                <Cookie className="w-6 h-6 text-[#5A3828]" />
+            <div className="pt-2 text-center flex flex-col items-center justify-center">
+              <div className="w-10 h-10 rounded-full border-2 border-dashed border-[#8C7667] flex items-center justify-center text-[#2C1810] mb-1">
+                <Cookie className="w-5 h-5 text-[#5A3828]" />
               </div>
-              <p className="font-serif italic text-sm text-[#382015] font-bold leading-tight mt-1">
+              <p className="font-serif italic text-xs text-[#382015] font-bold leading-tight mt-0.5">
                 Elige tu
                 <br />
-                favorita <span className="font-sans not-italic text-xs">♡</span>
+                favorita <span className="font-sans not-italic text-[10px]">♡</span>
               </p>
             </div>
           </aside>
@@ -634,26 +634,26 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           {/* =========================================================
               RIGHT COLUMN: BANNER + QUICK PILLS + 5-COLUMN GRID
              ========================================================= */}
-          <main className="flex-1 min-w-0 space-y-6">
+          <main className="flex-1 min-w-0 space-y-5">
             
             {/* 1. TOP HERO BANNER */}
-            <div className="w-full rounded-2xl overflow-hidden bg-[#F3EFEA] flex justify-between items-center h-[200px] px-6 sm:px-8 py-5 border border-[#EAE4DC]/60">
+            <div className="h-[180px] w-full rounded-2xl bg-[#F3EFEA] p-8 flex justify-between items-center overflow-hidden border border-[#EAE4DC]/60">
               {/* Left text content */}
               <div className="z-10 max-w-xl">
-                <span className="text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-1">
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-widest uppercase text-[#7A6456] block mb-1">
                   GALLETAS &amp; POSTRES
                 </span>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-[#2C1810] leading-tight tracking-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-[#2C1810] leading-tight tracking-tight">
                   Dulces momentos,
                   <br />
                   en cada bocado
                 </h1>
-                <p className="mt-1.5 text-xs sm:text-sm font-medium text-[#7A6456] max-w-md hidden sm:block line-clamp-1">
+                <p className="mt-1 text-xs sm:text-[13px] font-medium text-[#7A6456] max-w-md hidden sm:block line-clamp-1">
                   Descubre nuestras galletas artesanales y postres hechos con ingredientes de la mejor calidad.
                 </p>
                 <button
                   onClick={handleScrollToGrid}
-                  className="mt-3 inline-flex items-center gap-2 bg-[#2C1810] hover:bg-[#1C0F0A] text-white text-xs font-medium px-4 py-2 rounded-full transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
+                  className="mt-2.5 inline-flex items-center gap-2 bg-[#2C1810] hover:bg-[#1C0F0A] text-white text-xs font-medium px-4 py-1.5 rounded-full transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
                 >
                   <span>Ver colección</span>
                   <span>→</span>
@@ -661,7 +661,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
               </div>
 
               {/* Right placeholder rectangle replacing image */}
-              <div className="hidden sm:flex w-52 md:w-64 lg:w-72 h-[155px] bg-[#EAE6DF] rounded-2xl shrink-0 items-center justify-center border border-[#E0DBD2]/70">
+              <div className="hidden sm:flex w-44 md:w-56 lg:w-64 h-[116px] bg-[#EAE6DF] rounded-2xl shrink-0 items-center justify-center border border-[#E0DBD2]/70">
               </div>
             </div>
 
@@ -721,22 +721,22 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 sm:gap-4">
                 {displayedProducts.map((product) => {
                   const isFav = favorites.has(product.id);
 
                   return (
                     <article
                       key={product.id}
-                      className="bg-white rounded-2xl border border-[#EAE4DC]/80 p-2.5 overflow-hidden shadow-2xs hover:shadow-sm transition-all duration-200 flex flex-col justify-between group"
+                      className="bg-[#F8F6F2] p-2.5 rounded-3xl space-y-2 border border-[#EAE4DC]/60 overflow-hidden hover:shadow-sm transition-all duration-200 flex flex-col justify-between group"
                     >
                       {/* Top Image placeholder (Replaces automatic image search/generation) */}
-                      <div className="relative w-full h-40 bg-[#EAE6DF] rounded-2xl overflow-hidden flex items-center justify-center">
+                      <div className="relative h-28 w-full rounded-2xl bg-[#EAE6DF] overflow-hidden flex items-center justify-center shrink-0">
                         {/* Favorite Heart Outline (Top Right) */}
                         <button
                           type="button"
                           onClick={(e) => toggleFavorite(product.id, e)}
-                          className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-gray-400 hover:text-rose-600 hover:scale-110 transition-all shadow-2xs cursor-pointer z-10"
+                          className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-gray-400 hover:text-rose-600 hover:scale-110 transition-all shadow-2xs cursor-pointer z-10"
                           title={isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'}
                           aria-label={`Favorito ${product.name}`}
                         >
@@ -749,15 +749,15 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                       </div>
 
                       {/* Card Content */}
-                      <div className="pt-2.5 pb-1 px-1 flex flex-col flex-1 justify-between gap-2">
+                      <div className="px-1 flex flex-col flex-1 justify-between gap-1.5">
                         <div>
                           {/* Title / Subtitle */}
-                          <h3 className="text-xs sm:text-[13px] font-medium text-[#2C1810] truncate">
+                          <h3 className="text-xs font-medium text-[#2C1810] truncate" title={product.name}>
                             {product.name}
                           </h3>
 
                           {/* Price */}
-                          <div className="mt-0.5 text-xs sm:text-[13px] font-medium text-[#2C1810]">
+                          <div className="mt-0.5 text-xs font-bold text-[#2C1810]">
                             ${product.price.toFixed(2)}
                           </div>
 
@@ -785,7 +785,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                         <button
                           type="button"
                           onClick={(e) => addToCart(product.id, e)}
-                          className="w-full bg-[#2C1810] hover:bg-[#1A0E08] active:scale-98 text-white rounded-lg py-1.5 px-2 flex items-center justify-center gap-1.5 text-[11px] font-medium transition-colors shadow-2xs mt-1 cursor-pointer"
+                          className="w-full bg-[#2C1810] hover:bg-[#1A0E08] active:scale-98 text-white text-xs py-1.5 rounded-xl flex items-center justify-center gap-1.5 font-medium transition-colors shadow-2xs mt-1 cursor-pointer"
                         >
                           <ShoppingCart className="w-3 h-3" />
                           <span>Agregar al carrito</span>
@@ -803,7 +803,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
       {/* =============================================================
           COLECCIONES DESTACADAS (Centered with the same max-w and margins)
          ============================================================= */}
-      <div className="w-full max-w-[1600px] mx-auto px-8">
+      <div className="w-full max-w-[1320px] mx-auto px-6">
         <section className="w-full mt-10 sm:mt-14 pt-8 border-t border-[#EAE4DC]">
           {/* Header with decorative double arrows */}
           <div className="text-center mb-8">
@@ -1060,7 +1060,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
           <div className="w-4/5 max-w-xs bg-[#FFF9F3] border-l border-[#F2E8DC] h-full p-5 overflow-y-auto flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-[#EAE0D5] mb-4">
-                <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#382015]">
+                <h3 className="font-semibold text-xs uppercase tracking-wider text-[#2C1810]">
                   FILTRAR POR
                 </h3>
                 <button onClick={() => setMobileFilterOpen(false)} className="p-1">
@@ -1070,7 +1070,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
 
               {/* Categorías */}
               <div className="mb-4">
-                <div className="text-xs font-bold uppercase text-[#382015] mb-2">Categoría</div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-[#2C1810] mb-2">Categoría</div>
                 <div className="space-y-2 text-xs">
                   {CATEGORIES_LIST.map((cat) => (
                     <label key={cat} className="flex items-center gap-2 text-[#4A3225]">
@@ -1079,7 +1079,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                         name="mobCat"
                         checked={selectedCategory === cat}
                         onChange={() => setSelectedCategory(cat)}
-                        className="accent-[#BA2A5D]"
+                        className="accent-[#2C1810]"
                       />
                       <span>{cat}</span>
                     </label>
@@ -1089,7 +1089,7 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
 
               {/* Sabor */}
               <div className="mb-4">
-                <div className="text-xs font-bold uppercase text-[#382015] mb-2">Sabor</div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-[#2C1810] mb-2">Sabor</div>
                 <div className="space-y-2 text-xs max-h-36 overflow-y-auto">
                   {/* Opción 'Todos los sabores' arriba de Chocolate */}
                   <label className="flex items-center gap-2 text-[#4A3225] cursor-pointer">
@@ -1097,9 +1097,9 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                       type="checkbox"
                       checked={selectedFlavors.length === 0}
                       onChange={() => setSelectedFlavors([])}
-                      className="accent-[#BA2A5D]"
+                      className="accent-[#2C1810]"
                     />
-                    <span className={selectedFlavors.length === 0 ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>
+                    <span className={selectedFlavors.length === 0 ? 'font-bold text-[#2C1810]' : 'font-normal'}>
                       Todos los sabores
                     </span>
                   </label>
@@ -1109,9 +1109,9 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
                         type="checkbox"
                         checked={selectedFlavors.includes(flav)}
                         onChange={() => handleFlavorToggle(flav)}
-                        className="accent-[#BA2A5D]"
+                        className="accent-[#2C1810]"
                       />
-                      <span className={selectedFlavors.includes(flav) ? 'font-bold text-[#BA2A5D]' : 'font-normal'}>{flav}</span>
+                      <span className={selectedFlavors.includes(flav) ? 'font-bold text-[#2C1810]' : 'font-normal'}>{flav}</span>
                     </label>
                   ))}
                 </div>
@@ -1119,8 +1119,8 @@ export default function StoreExperience({ onBackToHome }: StoreExperienceProps) 
 
               {/* Precio */}
               <div className="mb-4">
-                <div className="text-xs font-bold uppercase text-[#382015] mb-2">
-                  Precio (Hasta S/ {maxPrice.toFixed(2)})
+                <div className="text-xs font-semibold uppercase tracking-wider text-[#2C1810] mb-2">
+                  Precio (Hasta ${maxPrice.toFixed(2)})
                 </div>
                 <input
                   type="range"
